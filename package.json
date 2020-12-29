@@ -1,0 +1,8 @@
+{
+  "name": "blog-post",
+  "description": "post service for my personal blog",
+  "main": "index.ts",
+  "scripts": {
+  },
+  "author": "Alvin Jang <hsjang.dev@gmail.com>"
+}
