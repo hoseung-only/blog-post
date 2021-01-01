@@ -11,5 +11,8 @@
     "serverless": "^2.16.1",
     "serverless-plugin-typescript": "^1.1.9",
     "typescript": "^4.1.3"
+  },
+  "dependencies": {
+    "@vendia/serverless-express": "^3.4.0"
   }
 }
