@@ -3,7 +3,8 @@
   "description": "post service for my personal blog",
   "main": "index.ts",
   "scripts": {
-    "deploy": "serverless deploy"
+    "deploy": "serverless deploy",
+    "start": "serverless offline"
   },
   "author": "Alvin Jang <hsjang.dev@gmail.com>",
   "devDependencies": {
