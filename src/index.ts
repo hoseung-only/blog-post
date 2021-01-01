@@ -1,19 +1,8 @@
-import { APIGatewayProxyHandler, APIGatewayProxyEvent } from "aws-lambda";
+import * as serverlessExpress from "aws-serverless-express";
+import { APIGatewayProxyHandler } from "aws-lambda";
 
-export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent) => {
-  const { path } = event;
+import { app } from "./app";
 
-  if (path === "/hello") {
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: "world!",
-      }),
-    };
-  } else {
-    return {
-      statusCode: 404,
-      body: "not found",
-    };
-  }
-};
+const server = serverlessExpress.createServer(app);
+
+export const handler: APIGatewayProxyHandler = (event, context) => { serverlessExpress.proxy(server, event, context) };
