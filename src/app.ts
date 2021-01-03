@@ -1,9 +1,16 @@
 import * as express from "express";
 
 import { routers } from "./routers";
+export class App {
+  private app: express.Application;
 
-const app = express();
+  constructor () {
+    this.app = express();
 
-app.use("/", routers());
+    this.app.use("/", routers());
+  }
 
-export { app };
+  public getApplication = () => this.app;
+}
+
+export const app = new App();
