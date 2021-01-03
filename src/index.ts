@@ -3,6 +3,6 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 
 import { app } from "./app";
 
-const server = serverlessExpress.createServer(app);
+const server = serverlessExpress.createServer(app.getApplication());
 
 export const handler: APIGatewayProxyHandler = (event, context) => { serverlessExpress.proxy(server, event, context) };
