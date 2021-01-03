@@ -1,13 +1,13 @@
 import * as express from "express";
 
-import { routers } from "./routers";
+import { getRootRouter } from "./routers";
 export class App {
   private app: express.Application;
 
   constructor () {
     this.app = express();
 
-    this.app.use("/", routers());
+    this.app.use("/", getRootRouter());
   }
 
   public getApplication = () => this.app;
