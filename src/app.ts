@@ -13,4 +13,4 @@ export class App {
   public getApplication = () => this.app;
 }
 
-export const app = new App();
+export const app = new App().getApplication();
