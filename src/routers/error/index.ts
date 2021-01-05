@@ -1,6 +1,5 @@
 import { Router, RequestHandler, ErrorRequestHandler } from "express";
 
-
 export const applyErrorHandlers = (rootRouter: Router) => {
   const notFound: RequestHandler = (req, res, next) => {
     const err = new Error("Not Found");
@@ -21,4 +20,4 @@ export const applyErrorHandlers = (rootRouter: Router) => {
 
   rootRouter.use(notFound);
   rootRouter.use(serverError);
-}
+};

@@ -5,4 +5,6 @@ import { app } from "./app";
 
 const server = serverlessExpress.createServer(app);
 
-export const handler: APIGatewayProxyHandler = (event, context) => { serverlessExpress.proxy(server, event, context) };
+export const handler: APIGatewayProxyHandler = (event, context) => {
+  serverlessExpress.proxy(server, event, context);
+};

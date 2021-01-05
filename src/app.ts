@@ -4,7 +4,7 @@ import { getRootRouter } from "./routers";
 export class App {
   private app: express.Application;
 
-  constructor () {
+  constructor() {
     this.app = express();
 
     this.app.use("/", getRootRouter());
