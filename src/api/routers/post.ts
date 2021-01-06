@@ -19,7 +19,7 @@ export const applyPostRouters = (rootRouter: Router) => {
 
   router.get(
     "/:id",
-    param("id").isNumeric(),
+    param("id").isNumeric().withMessage("id must be numeric"),
     validateParameters,
     async (req, res, next) => {
       const id = Number(req.params.id);
