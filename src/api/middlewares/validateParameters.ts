@@ -8,7 +8,9 @@ export const validateParameters: RequestHandler = (req, res, next) => {
   if (!result.isEmpty()) {
     // return all those errors with 400
     return res.status(400).json({
-      messages: result.array().map(error => `[ERROR] Parameter ${error.param}: ${error.msg}`),
+      messages: result
+        .array()
+        .map((error) => `[ERROR] Parameter ${error.param}: ${error.msg}`),
     });
   }
 
