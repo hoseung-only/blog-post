@@ -1,6 +1,6 @@
 import { Router, RequestHandler, ErrorRequestHandler } from "express";
 
-export const applyErrorHandlers = (rootRouter: Router) => {
+export const error = (rootRouter: Router) => {
   const notFound: RequestHandler = (req, res, next) => {
     const err = new Error("Not Found");
     next(err);

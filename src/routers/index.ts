@@ -1,11 +1,11 @@
 import { Router } from "express";
 
-import { applyErrorHandlers } from "./error";
+import { error } from "./error";
 
 export const getRootRouter = () => {
   const router = Router();
 
-  applyErrorHandlers(router);
+  error(router);
 
   return router;
 };
