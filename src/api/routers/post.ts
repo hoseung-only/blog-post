@@ -14,7 +14,7 @@ const mockPosts: { [key in number]: { title: string; content: string } } = {
   },
 };
 
-export const post = (rootRouter: Router) => {
+export const applyPostRouters = (rootRouter: Router) => {
   const router = Router();
 
   router.get(

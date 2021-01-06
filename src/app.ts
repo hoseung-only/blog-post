@@ -1,6 +1,6 @@
 import * as express from "express";
 
-import { getRootRouter } from "./routers";
+import { getRootRouter } from "./api";
 export class App {
   private app: express.Application;
 
