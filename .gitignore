@@ -1,3 +1,9 @@
+# dependencies
 node_modules
+
+# related to build and deploy
 .serverless
 .build
+
+# settings for database
+ormconfig.json
