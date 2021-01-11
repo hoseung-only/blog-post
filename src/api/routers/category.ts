@@ -31,7 +31,6 @@ export const applyCategoryRouters = (rootRouter: Router) => {
           result,
         });
       } catch (error) {
-        console.error(error);
         return next(error);
       }
     }
@@ -39,11 +38,7 @@ export const applyCategoryRouters = (rootRouter: Router) => {
 
   router.get(
     "/:id",
-    param("id")
-      .isString()
-      .withMessage("id must be string")
-      .exists()
-      .withMessage("id must be provided"),
+    param("id").isString().withMessage("id must be string"),
     validateParameters,
     async (req, res, next) => {
       try {
@@ -51,11 +46,16 @@ export const applyCategoryRouters = (rootRouter: Router) => {
 
         const result = await Category.findById(id);
 
+        if (!result) {
+          return res.status(404).json({
+            message: `category of id ${id} is not exist`,
+          });
+        }
+
         return res.status(200).json({
           result,
         });
       } catch (error) {
-        console.error(error);
         return next(error);
       }
     }
