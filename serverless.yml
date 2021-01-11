@@ -6,6 +6,7 @@ provider:
   region: ap-northeast-2
   profile: hsjang
   apiName: blog-post
+  environment: ${file(./env/mysql.yml)}
 
 plugins:
   - serverless-plugin-typescript
