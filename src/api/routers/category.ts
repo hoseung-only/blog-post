@@ -48,7 +48,7 @@ export const applyCategoryRouters = (rootRouter: Router) => {
 
         if (!result) {
           return res.status(404).json({
-            message: `category of id ${id} is not exist`,
+            message: `category of id [${id}] is not exist`,
           });
         }
 
