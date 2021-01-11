@@ -3,36 +3,33 @@ import { param } from "express-validator";
 
 import { validateParameters } from "../middlewares/validateParameters";
 
-const mockPosts: { [key in number]: { title: string; content: string } } = {
-  1: {
-    title: "first post",
-    content: "hello",
-  },
-  2: {
-    title: "second post",
-    content: "world",
-  },
-};
+import { Post } from "../../database/entities/post";
 
 export const applyPostRouters = (rootRouter: Router) => {
   const router = Router();
 
   router.get(
     "/:id",
-    param("id").isNumeric().withMessage("id must be numeric"),
+    param("id").isString().withMessage("id must be string"),
     validateParameters,
     async (req, res, next) => {
-      const id = Number(req.params.id);
+      try {
+        const id = req.params.id as string;
 
-      if (!mockPosts[id]) {
-        return res.status(404).json({
-          message: `post of id ${id} is not exist`,
+        const result = await Post.findById(id);
+
+        if (!result) {
+          return res.status(404).json({
+            message: `post of id ${id} is not exist`,
+          });
+        }
+
+        return res.status(200).json({
+          result,
         });
+      } catch (error) {
+        return next(error);
       }
-
-      return res.status(200).json({
-        data: mockPosts[id],
-      });
     }
   );
 
