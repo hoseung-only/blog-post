@@ -9,8 +9,18 @@ import {
 
 import { Category } from "./category";
 
+import { getConnection } from "../getConnection";
+
 @Entity()
 export class Post {
+  private static async getRepository() {
+    return (await getConnection()).getRepository(this);
+  }
+
+  public static async findById(id: string) {
+    return (await this.getRepository()).findOne(id);
+  }
+
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
