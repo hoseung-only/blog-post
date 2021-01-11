@@ -4,6 +4,7 @@
     "module": "commonjs",
     "outDir": "./build",
     "strict": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false
   }
 }
