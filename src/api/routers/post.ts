@@ -33,5 +33,5 @@ export const applyPostRouters = (rootRouter: Router) => {
     }
   );
 
-  rootRouter.use("/posts", router);
+  rootRouter.use("/post", router);
 };
