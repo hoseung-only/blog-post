@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  Index
 } from "typeorm";
 
 import { Category } from "./category";
@@ -21,6 +22,7 @@ export class Post {
     return (await this.getRepository()).findOne(id);
   }
 
+  @Index()
   @PrimaryGeneratedColumn("uuid")
   id: string;
 

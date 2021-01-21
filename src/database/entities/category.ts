@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  Index
 } from "typeorm";
 
 import { getConnection } from "../getConnection";
@@ -35,6 +36,7 @@ export class Category {
     return (await this.getRepository()).findOne(id);
   }
 
+  @Index()
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
