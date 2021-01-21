@@ -18,13 +18,17 @@ export class Post {
     return (await getConnection()).getRepository(this);
   }
 
+  public static async find(cursor: string, categoryId?: string) {
+    return (await this.getRepository()).find({where: {}})
+  }
+
   public static async findById(id: string) {
     return (await this.getRepository()).findOne(id);
   }
 
   @Index()
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column({ type: "varchar", length: 255 })
   title: string;
@@ -32,7 +36,7 @@ export class Post {
   @Column({ type: "text" })
   content: string;
 
-  @CreateDateColumn({ name: "created_at" })
+  @CreateDateColumn({ type: "datetime", name: "created_at" })
   createdAt: Date;
 
   @ManyToOne(() => Category)
