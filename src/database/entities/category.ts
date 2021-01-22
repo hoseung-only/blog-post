@@ -4,7 +4,7 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
-  Index
+  Index,
 } from "typeorm";
 
 import { getConnection } from "../getConnection";
