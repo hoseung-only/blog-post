@@ -6,7 +6,7 @@ import {
   ManyToOne,
   JoinColumn,
   Index,
-  MoreThan,
+  MoreThanOrEqual,
 } from "typeorm";
 
 import { Category } from "./category";
@@ -21,7 +21,7 @@ export class Post {
 
   public static async findByCursor(cursor: string) {
     return (await this.getRepository()).find({
-      where: { id: MoreThan(cursor) },
+      where: { id: MoreThanOrEqual(cursor) },
       order: { id: "ASC" },
       take: 15,
     });
