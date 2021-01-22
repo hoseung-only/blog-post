@@ -5,7 +5,8 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
-  Index
+  Index,
+  MoreThan,
 } from "typeorm";
 
 import { Category } from "./category";
@@ -18,8 +19,12 @@ export class Post {
     return (await getConnection()).getRepository(this);
   }
 
-  public static async find(cursor: string, categoryId?: string) {
-    return (await this.getRepository()).find({where: {}})
+  public static async findByCursor(cursor: string) {
+    return (await this.getRepository()).find({
+      where: { id: MoreThan(cursor) },
+      order: { id: "ASC" },
+      take: 15,
+    });
   }
 
   public static async findById(id: string) {
