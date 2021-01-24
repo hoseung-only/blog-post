@@ -6,6 +6,7 @@ provider:
   region: ap-northeast-2
   profile: hsjang
   apiName: blog-post
+  stage: prod
   environment: ${file(./env/mysql.yml)}
 
 plugins:
