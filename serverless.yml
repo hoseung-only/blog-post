@@ -5,9 +5,11 @@ provider:
   runtime: nodejs12.x
   region: ap-northeast-2
   profile: hsjang
-  apiName: blog-post
   stage: prod
   environment: ${file(./env/mysql.yml)}
+  apiGateway:
+    shouldStartNameWithService: true
+  lambdaHashingVersion: 20201221
 
 plugins:
   - serverless-plugin-typescript
