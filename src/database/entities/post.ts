@@ -19,11 +19,11 @@ export class Post {
     return (await getConnection()).getRepository(this);
   }
 
-  public static async findByCursor(cursor: string) {
+  public static async findByCursor(cursor: number) {
     return (await this.getRepository()).find({
       where: { id: MoreThanOrEqual(cursor) },
       order: { id: "ASC" },
-      take: 15,
+      take: 10,
     });
   }
 

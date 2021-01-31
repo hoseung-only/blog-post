@@ -14,11 +14,11 @@ export const applyPostRouters = (rootRouter: Router) => {
     validateParameters,
     async (req, res, next) => {
       try {
-        const cursor = (req.query.cursor ?? "0") as string;
+        const cursor = req.query.cursor ? Number(req.query.cursor) : 0;
 
         const result = await Post.findByCursor(cursor);
         const nextCursor =
-          result.length === 15 ? result[result.length - 1].id + 1 : null;
+          result.length === 10 ? result[result.length - 1].id + 1 : null;
 
         return res.status(200).json({
           result,
