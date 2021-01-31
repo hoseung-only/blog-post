@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { query, param } from "express-validator";
+import { query, param, body } from "express-validator";
 
 import { validateParameters } from "../middlewares/validateParameters";
 
@@ -54,6 +54,45 @@ export const applyPostRouters = (rootRouter: Router) => {
       }
     }
   );
+
+  router.post(
+    "/",
+    body("title")
+      .isString()
+      .withMessage("title must be string")
+      .exists()
+      .withMessage("title must be provided"),
+    body("content")
+      .isString()
+      .withMessage("content must be string")
+      .exists()
+      .withMessage("title must be provided"),
+    body("categoryId")
+      .isNumeric()
+      .withMessage("categoryId must be number")
+      .exists()
+      .withMessage("categoryId must be provided"),
+    validateParameters,
+    async (req, res, next) => {
+      try {
+        const title = req.body.title as string;
+        const content = req.body.content as string;
+        const categoryId = Number(req.body.categoryId);
+
+        const result = await Post.create({
+          title,
+          content,
+          categoryId,
+        })
+
+        return res.status(201).json({
+          result,
+        });
+      } catch (error) {
+        return next(error);
+      }
+    }
+  )
 
   rootRouter.use("/post", router);
 };

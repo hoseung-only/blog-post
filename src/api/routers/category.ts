@@ -16,14 +16,14 @@ export const applyCategoryRouters = (rootRouter: Router) => {
       .exists()
       .withMessage("name must be provided"),
     body("parentId")
-      .isString()
+      .isNumeric()
       .withMessage("parentId must be string")
       .optional(),
     validateParameters,
     async (req, res, next) => {
       try {
         const name = req.body.name as string;
-        const parentId = req.body.parentId as string | undefined;
+        const parentId = req.body.parentId as number || undefined;
 
         const result = await Category.create({ name, parentId });
 
@@ -38,11 +38,11 @@ export const applyCategoryRouters = (rootRouter: Router) => {
 
   router.get(
     "/:id",
-    param("id").isString().withMessage("id must be string"),
+    param("id").isNumeric().withMessage("id must be number"),
     validateParameters,
     async (req, res, next) => {
       try {
-        const id = req.params.id as string;
+        const id = Number(req.params.id);
 
         const result = await Category.findById(id);
 

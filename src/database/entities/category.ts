@@ -15,7 +15,7 @@ export class Category {
     return (await getConnection()).getRepository(this);
   }
 
-  public static async create(attributes: { name: string; parentId?: string }) {
+  public static async create(attributes: { name: string; parentId?: number }) {
     const { name, parentId = null } = attributes;
 
     const category = new this();
@@ -32,7 +32,7 @@ export class Category {
     return (await this.getRepository()).save(category);
   }
 
-  public static async findById(id: string) {
+  public static async findById(id: number) {
     return (await this.getRepository()).findOne(id);
   }
 
