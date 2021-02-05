@@ -4,7 +4,6 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: ap-northeast-2
-  profile: hsjang
   stage: prod
   environment: ${file(./env/mysql.yml)}
   apiGateway:
