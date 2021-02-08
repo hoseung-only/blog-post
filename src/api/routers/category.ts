@@ -23,7 +23,7 @@ export const applyCategoryRouters = (rootRouter: Router) => {
     async (req, res, next) => {
       try {
         const name = req.body.name as string;
-        const parentId = req.body.parentId as number || undefined;
+        const parentId = (req.body.parentId as number) || undefined;
 
         const result = await Category.create({ name, parentId });
 

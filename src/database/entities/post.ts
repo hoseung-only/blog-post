@@ -31,12 +31,20 @@ export class Post {
     return (await this.getRepository()).findOne(id);
   }
 
-  public static async create({title, content, categoryId}: { title: string, content: string, categoryId: number }) {
-    const repository = (await this.getRepository());
-    
+  public static async create({
+    title,
+    content,
+    categoryId,
+  }: {
+    title: string;
+    content: string;
+    categoryId: number;
+  }) {
+    const repository = await this.getRepository();
+
     const post = repository.create();
     const category = new Category();
-    
+
     category.id = Number(categoryId);
 
     post.title = title;

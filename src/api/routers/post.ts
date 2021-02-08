@@ -83,7 +83,7 @@ export const applyPostRouters = (rootRouter: Router) => {
           title,
           content,
           categoryId,
-        })
+        });
 
         return res.status(201).json({
           result,
@@ -92,7 +92,7 @@ export const applyPostRouters = (rootRouter: Router) => {
         return next(error);
       }
     }
-  )
+  );
 
   rootRouter.use("/post", router);
 };
