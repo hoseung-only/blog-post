@@ -3,7 +3,7 @@ import { query, body } from "express-validator";
 
 import { validateParameters } from "../middlewares/validateParameters";
 
-// This router is only used for test
+// This routers is only used for test of microservice sdk
 export const applyTestRouters = (rootRouter: Router) => {
   const router = Router();
 
