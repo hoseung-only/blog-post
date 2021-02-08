@@ -33,7 +33,7 @@ export const applyTestRouters = (rootRouter: Router) => {
       .withMessage("message must be provided"),
     validateParameters,
     (req, res, next) => {
-      const message = req.query.message as string;
+      const message = req.body.message as string;
 
       return res.status(200).json({
         message,
