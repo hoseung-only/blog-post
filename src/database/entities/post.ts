@@ -54,6 +54,10 @@ export class Post {
     return await repository.save(post);
   }
 
+  public static async removeAll() {
+    await (await this.getRepository()).clear();
+  }
+
   @Index()
   @PrimaryGeneratedColumn()
   id: number;

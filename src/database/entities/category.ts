@@ -36,6 +36,10 @@ export class Category {
     return (await this.getRepository()).findOne(id);
   }
 
+  public static async removeAll() {
+    await (await this.getRepository()).clear();
+  }
+
   @Index()
   @PrimaryGeneratedColumn()
   id: number;
