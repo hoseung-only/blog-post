@@ -36,8 +36,27 @@ export class Category {
     return (await this.getRepository()).findOne(id);
   }
 
-  public static async removeAll() {
-    await (await this.getRepository()).clear();
+  public static async findByParentId(id: number) {
+    const parent = new this();
+    parent.id = id;
+
+    return (await this.getRepository()).find({ where: { parent } });
+  }
+
+  public static async deleteByIds(ids: number[]) {
+    (await this.getRepository()).delete(ids);
+  }
+
+  /**
+   * This method only used for test.
+   */
+  public static async dropTable() {
+    const repository = await this.getRepository();
+
+    // ignore foreign key constraint to truncate
+    await repository.query("SET FOREIGN_KEY_CHECKS = 0");
+    await repository.clear();
+    await repository.query("SET FOREIGN_KEY_CHECKS = 1");
   }
 
   @Index()
@@ -47,7 +66,7 @@ export class Category {
   @Column({ type: "varchar", length: 255 })
   name: string;
 
-  @ManyToOne(() => Category)
+  @ManyToOne(() => Category, { onDelete: "CASCADE" })
   @JoinColumn({ name: "parent_id" })
   parent: Category;
 }
