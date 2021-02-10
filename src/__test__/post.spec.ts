@@ -2,10 +2,10 @@ import * as _ from "lodash";
 import * as request from "supertest";
 import { expect } from "chai";
 
-import { app } from "../../app";
+import { app } from "../app";
 
-import { Post } from "../../database/entities/post";
-import { Category } from "../../database/entities/category";
+import { Post } from "../database/entities/post";
+import { Category } from "../database/entities/category";
 
 describe("Post Routers", () => {
   after(async () => {

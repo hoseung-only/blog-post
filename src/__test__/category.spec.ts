@@ -2,9 +2,9 @@ import * as _ from "lodash";
 import * as request from "supertest";
 import { expect } from "chai";
 
-import { app } from "../../app";
+import { app } from "../app";
 
-import { Category } from "../../database/entities/category";
+import { Category } from "../database/entities/category";
 
 describe("Category Routers", () => {
   let categoryId: number;
