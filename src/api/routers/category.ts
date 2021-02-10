@@ -61,5 +61,24 @@ export const applyCategoryRouters = (rootRouter: Router) => {
     }
   );
 
+  router.get(
+    "/:id/children",
+    param("id").isNumeric().withMessage("id must be number"),
+    validateParameters,
+    async (req, res, next) => {
+      try {
+        const id = Number(req.params.id);
+
+        const result = await Category.findByParentId(id);
+
+        return res.status(200).json({
+          result: result.length > 0 ? result : null,
+        });
+      } catch (error) {
+        return next(error);
+      }
+    }
+  );
+
   rootRouter.use("/category", router);
 };
