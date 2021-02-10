@@ -9,7 +9,8 @@ import { Category } from "../../database/entities/category";
 
 describe("Post Routers", () => {
   after(async () => {
-    await Post.removeAll();
+    await Post.dropTable();
+    await Category.dropTable();
   });
 
   describe("GET /list : get post list", () => {
@@ -27,7 +28,7 @@ describe("Post Routers", () => {
     });
 
     after(async () => {
-      await Post.removeAll();
+      await Post.dropTable();
     });
 
     context("When user requests with specific cursor", () => {
