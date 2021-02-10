@@ -54,7 +54,10 @@ export class Post {
     return await repository.save(post);
   }
 
-  public static async removeAll() {
+  /**
+   * This method only used for test.
+   */
+  public static async dropTable() {
     await (await this.getRepository()).clear();
   }
 
@@ -71,7 +74,7 @@ export class Post {
   @CreateDateColumn({ type: "datetime", name: "created_at" })
   createdAt: Date;
 
-  @ManyToOne(() => Category)
+  @ManyToOne(() => Category, { onDelete: "CASCADE" })
   @JoinColumn({ name: "category_id" })
   category: Category;
 }
