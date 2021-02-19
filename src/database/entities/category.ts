@@ -6,6 +6,7 @@ import {
   JoinColumn,
   Index,
 } from "typeorm";
+import { ErrorResponse } from "../../utils/error";
 
 import { getConnection } from "../getConnection";
 
@@ -25,7 +26,13 @@ export class Category {
       const parent = await this.findById(parentId);
 
       if (parent) {
-        category.parent = parent;
+        if (!parent.parent) {
+          category.parent = parent;
+        } else {
+          throw new ErrorResponse(400, "Depth of categories have to be up to 2");
+        }
+      } else {
+        throw new ErrorResponse(400, "Provided parent category does not exist");
       }
     }
 
@@ -68,5 +75,5 @@ export class Category {
 
   @ManyToOne(() => Category, { onDelete: "CASCADE" })
   @JoinColumn({ name: "parent_id" })
-  parent: Category;
+  parent?: Category;
 }
