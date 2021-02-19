@@ -26,7 +26,7 @@ export class Category {
       const parent = await this.findById(parentId);
 
       if (parent) {
-        if (!parent.parent) {
+        if (!parent.parentId) {
           category.parent = parent;
         } else {
           throw new ErrorResponse(
