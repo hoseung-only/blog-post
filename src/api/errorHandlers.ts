@@ -1,14 +1,16 @@
 import { Router, RequestHandler, ErrorRequestHandler } from "express";
 
+import { ErrorResponse } from "../utils/error";
+
 export const applyErrorHandlers = (rootRouter: Router) => {
   const notFound: RequestHandler = (req, res, next) => {
-    const err = new Error("Not Found");
+    const err = new ErrorResponse(404, "Not Found");
     next(err);
   };
 
   const serverError: ErrorRequestHandler = (err, req, res, next) => {
-    if (err.message === "Not Found") {
-      return res.status(404).json({
+    if (err instanceof ErrorResponse) {
+      return res.status(err.statusCode).json({
         message: err.message,
       });
     } else {
