@@ -6,9 +6,10 @@ import {
   JoinColumn,
   Index,
 } from "typeorm";
-import { ErrorResponse } from "../../utils/error";
 
 import { getConnection } from "../getConnection";
+
+import { ErrorResponse } from "../../utils/error";
 
 @Entity()
 export class Category {

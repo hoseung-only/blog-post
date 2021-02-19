@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { query, param, body } from "express-validator";
 
+import { ErrorResponse } from "../../utils/error";
+
 import { validateParameters } from "../middlewares/validateParameters";
 
 import { Post } from "../../database/entities/post";
@@ -41,9 +43,7 @@ export const applyPostRouters = (rootRouter: Router) => {
         const result = await Post.findById(id);
 
         if (!result) {
-          return res.status(404).json({
-            message: `post of id [${id}] is not exist`,
-          });
+          return new ErrorResponse(404, `post of id [${id}] is not exist`);
         }
 
         return res.status(200).json({
