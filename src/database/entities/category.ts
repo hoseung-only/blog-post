@@ -29,7 +29,10 @@ export class Category {
         if (!parent.parent) {
           category.parent = parent;
         } else {
-          throw new ErrorResponse(400, "Depth of categories have to be up to 2");
+          throw new ErrorResponse(
+            400,
+            "Depth of categories have to be up to 2"
+          );
         }
       } else {
         throw new ErrorResponse(400, "Provided parent category does not exist");
@@ -44,10 +47,7 @@ export class Category {
   }
 
   public static async findByParentId(id: number) {
-    const parent = new this();
-    parent.id = id;
-
-    return (await this.getRepository()).find({ where: { parent } });
+    return (await this.getRepository()).find({ where: { parentId: id } });
   }
 
   public static async deleteByIds(ids: number[]) {
@@ -72,6 +72,9 @@ export class Category {
 
   @Column({ type: "varchar", length: 255 })
   name: string;
+
+  @Column({ name: "parent_id", nullable: true })
+  parentId?: number;
 
   @ManyToOne(() => Category, { onDelete: "CASCADE" })
   @JoinColumn({ name: "parent_id" })
