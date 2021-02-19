@@ -43,13 +43,10 @@ export class Post {
     const repository = await this.getRepository();
 
     const post = repository.create();
-    const category = new Category();
-
-    category.id = Number(categoryId);
 
     post.title = title;
     post.content = content;
-    post.category = category;
+    post.categoryId = categoryId;
 
     return await repository.save(post);
   }
@@ -74,7 +71,10 @@ export class Post {
   @CreateDateColumn({ type: "datetime", name: "created_at" })
   createdAt: Date;
 
+  @Column({ name: "category_id", nullable: true })
+  categoryId?: number;
+
   @ManyToOne(() => Category, { onDelete: "CASCADE" })
   @JoinColumn({ name: "category_id" })
-  category: Category;
+  category?: Category;
 }
