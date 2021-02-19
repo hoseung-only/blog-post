@@ -5,7 +5,7 @@ import { ErrorResponse } from "../utils/error";
 export const applyErrorHandlers = (rootRouter: Router) => {
   const notFound: RequestHandler = (req, res, next) => {
     const err = new ErrorResponse(404, "Not Found");
-    next(err);
+    return next(err);
   };
 
   const serverError: ErrorRequestHandler = (err, req, res, next) => {
