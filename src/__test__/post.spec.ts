@@ -97,7 +97,7 @@ describe("Post Routers", () => {
             expect(response.body.result).to.be.deep.contains({
               title,
               content,
-              category: { id: categoryId },
+              categoryId: categoryId,
             });
           })
           .catch((error) => {
