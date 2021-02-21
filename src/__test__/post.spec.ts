@@ -13,6 +13,46 @@ describe("Post Routers", () => {
     await Category.dropTable();
   });
 
+  describe("GET /:id : get specific post", () => {
+    let post: Post;
+
+    before(async () => {
+      const { id } = await Category.create({ name: "category" });
+      post = await Post.create({
+        title: "title",
+        content: "content",
+        categoryId: id,
+      });
+    });
+
+    after(async () => {
+      await Post.dropTable();
+      await Category.dropTable();
+    });
+
+    context("When user requests", () => {
+      it("should return requested post", async () => {
+        return request(app)
+          .get(`/post/${post.id}`)
+          .expect(200)
+          .then((response) => {
+            const { result } = response.body;
+
+            expect(result).to.be.deep.eq({
+              id: post.id,
+              title: post.title,
+              content: post.content,
+              categoryId: post.categoryId,
+              createdAt: post.createdAt.toISOString(),
+            });
+          })
+          .catch((error) => {
+            throw error;
+          });
+      });
+    });
+  });
+
   describe("GET /list : get post list", () => {
     before(async () => {
       const { id } = await Category.create({ name: "category" });
@@ -29,6 +69,7 @@ describe("Post Routers", () => {
 
     after(async () => {
       await Post.dropTable();
+      await Category.dropTable();
     });
 
     context("When user requests with specific cursor", () => {
