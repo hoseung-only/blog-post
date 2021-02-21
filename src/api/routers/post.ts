@@ -7,6 +7,8 @@ import { validateParameters } from "../middlewares/validateParameters";
 
 import { Post } from "../../database/entities/post";
 
+import * as Presenters from "../presenters";
+
 export const applyPostRouters = (rootRouter: Router) => {
   const router = Router();
 
@@ -18,14 +20,13 @@ export const applyPostRouters = (rootRouter: Router) => {
       try {
         const cursor = req.query.cursor ? Number(req.query.cursor) : 0;
 
-        const result = await Post.findByCursor(cursor);
+        const posts = await Post.findByCursor(cursor);
         const nextCursor =
-          result.length === 10 ? result[result.length - 1].id + 1 : null;
+          posts.length === 10 ? posts[posts.length - 1].id + 1 : null;
 
-        return res.status(200).json({
-          result,
-          nextCursor,
-        });
+        return res
+          .status(200)
+          .json(Presenters.presentPostList({ posts, nextCursor }));
       } catch (error) {
         return next(error);
       }
@@ -40,15 +41,13 @@ export const applyPostRouters = (rootRouter: Router) => {
       try {
         const id = req.params.id as string;
 
-        const result = await Post.findById(id);
+        const post = await Post.findById(id);
 
-        if (!result) {
+        if (!post) {
           return new ErrorResponse(404, `post of id [${id}] is not exist`);
         }
 
-        return res.status(200).json({
-          result,
-        });
+        return res.status(200).json(Presenters.presentPost({ post }));
       } catch (error) {
         return next(error);
       }
@@ -79,15 +78,13 @@ export const applyPostRouters = (rootRouter: Router) => {
         const content = req.body.content as string;
         const categoryId = Number(req.body.categoryId);
 
-        const result = await Post.create({
+        const post = await Post.create({
           title,
           content,
           categoryId,
         });
 
-        return res.status(201).json({
-          result,
-        });
+        return res.status(201).json(Presenters.presentPost({ post }));
       } catch (error) {
         return next(error);
       }
