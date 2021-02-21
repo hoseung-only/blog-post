@@ -72,9 +72,9 @@ export class Post {
   createdAt: Date;
 
   @Column({ name: "category_id", nullable: true })
-  categoryId?: number;
+  categoryId: number;
 
   @ManyToOne(() => Category, { onDelete: "CASCADE" })
   @JoinColumn({ name: "category_id" })
-  category?: Category;
+  category: Category;
 }
