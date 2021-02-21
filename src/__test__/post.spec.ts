@@ -36,14 +36,14 @@ describe("Post Routers", () => {
           .get(`/post/${post.id}`)
           .expect(200)
           .then((response) => {
-            const { result } = response.body;
+            const result = response.body;
 
             expect(result).to.be.deep.eq({
               id: post.id,
               title: post.title,
               content: post.content,
               categoryId: post.categoryId,
-              createdAt: post.createdAt.toISOString(),
+              createdAt: post.createdAt.valueOf(),
             });
           })
           .catch((error) => {
@@ -79,12 +79,12 @@ describe("Post Routers", () => {
           .query({ cursor: 10 })
           .expect(200)
           .then((response) => {
-            const { result, nextCursor } = response.body;
+            const { posts, nextCursor } = response.body;
 
             // list length should be 6 (id 10 ~ 15)
-            expect(result.length).to.be.eq(6);
+            expect(posts.length).to.be.eq(6);
             // id of first post should be 10
-            expect(result[0].id).to.be.eq(10);
+            expect(posts[0].id).to.be.eq(10);
             // next cursor should be null (because there are no more posts)
             expect(nextCursor).to.be.null;
           })
@@ -100,12 +100,12 @@ describe("Post Routers", () => {
           .get("/post/list")
           .expect(200)
           .then((response) => {
-            const { result, nextCursor } = response.body;
+            const { posts, nextCursor } = response.body;
 
             // maximun of list length is 10
-            expect(result.length).to.be.eq(10);
+            expect(posts.length).to.be.eq(10);
             // id of first post should be 1
-            expect(result[0].id).to.be.eq(1);
+            expect(posts[0].id).to.be.eq(1);
             // next cursor should be 11
             expect(nextCursor).to.be.eq(11);
           })
@@ -135,10 +135,10 @@ describe("Post Routers", () => {
           .send({ title, content, categoryId })
           .expect(201)
           .then((response) => {
-            expect(response.body.result).to.be.deep.contains({
+            expect(response.body).to.be.deep.contains({
               title,
               content,
-              categoryId: categoryId,
+              categoryId,
             });
           })
           .catch((error) => {
