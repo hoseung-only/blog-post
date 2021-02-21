@@ -16,6 +16,12 @@ And then run test script
 npm run test
 ```
 
+After test finished, remove mysql container
+```
+docker stop blog-mysql
+docker rm blog-mysql
+```
+
 ## References
 
 - [백엔드 아키텍처](https://miro.com/app/board/o9J_laTyd80=/)
