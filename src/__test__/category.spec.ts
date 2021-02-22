@@ -7,106 +7,53 @@ import { app } from "../app";
 import { Category } from "../database/entities/category";
 
 describe("Category Routers", () => {
-  let parentCategory: Category;
-
-  before(async () => {
-    parentCategory = await Category.create({ name: "parent category" });
-  });
-
-  after(async () => {
-    await Category.dropTable();
-  });
-
-  describe("GET /:id : get category by id", () => {
-    context("When user has created category", () => {
-      it("should return requested category", async () => {
+  describe("GET /list : get all categories", () => {
+    context("When user requests but there are no categories", () => {
+      it("should return empty array", async () => {
         return request(app)
-          .get(`/category/${parentCategory.id}`)
+          .get("/category/list")
           .expect(200)
           .then((response) => {
-            const { result } = response.body;
+            const { data } = response.body;
 
-            expect(result).to.be.deep.eq(parentCategory);
+            expect(data.length).to.be.eq(0);
           })
           .catch((error) => {
             throw error;
           });
       });
     });
-  });
 
-  describe("GET /:id/children : get category by parent id", () => {
-    context("When requested category has any child categories", () => {
-      let childrenIds: number[];
-
+    context("When user requests", () => {
       before(async () => {
-        const results = await Promise.all(
-          _.times(5, () =>
+        const result = await Promise.all(
+          _.times(2, () => Category.create({ name: "parent" }))
+        );
+        await Promise.all(
+          _.times(5, (index) =>
             Category.create({
-              name: "child category",
-              parentId: parentCategory.id,
+              name: "child",
+              parentId: result[index > 1 ? 0 : 1].id,
             })
           )
         );
-
-        childrenIds = results.map((e) => e.id);
       });
 
       after(async () => {
-        await Category.deleteByIds(childrenIds);
+        await Category.dropTable();
       });
 
-      it("should return requested category", async () => {
+      it("should return categories", async () => {
         return request(app)
-          .get(`/category/${parentCategory.id}/children`)
+          .get("/category/list")
           .expect(200)
           .then((response) => {
-            const { result } = response.body;
+            const { data } = response.body;
 
-            expect(result.length).to.be.eq(5);
-            expect(result).to.be.deep.eq([
-              {
-                id: 2,
-                name: "child category",
-                parentId: parentCategory.id,
-              },
-              {
-                id: 3,
-                name: "child category",
-                parentId: parentCategory.id,
-              },
-              {
-                id: 4,
-                name: "child category",
-                parentId: parentCategory.id,
-              },
-              {
-                id: 5,
-                name: "child category",
-                parentId: parentCategory.id,
-              },
-              {
-                id: 6,
-                name: "child category",
-                parentId: parentCategory.id,
-              },
-            ]);
-          })
-          .catch((error) => {
-            throw error;
-          });
-      });
-    });
-
-    context("When requested category doesn't has any child categories", () => {
-      it("should return requested category", async () => {
-        return request(app)
-          .get(`/category/${parentCategory.id}/children`)
-          .expect(200)
-          .then((response) => {
-            const { result } = response.body;
-
-            expect(result).to.be.null;
+            expect(data.length).to.be.eq(2);
+            expect(
+              [data[0].children.length, data[1].children.length].sort()
+            ).to.be.deep.eq([2, 3]);
           })
           .catch((error) => {
             throw error;
@@ -116,6 +63,16 @@ describe("Category Routers", () => {
   });
 
   describe("POST / : create category", () => {
+    let parentCategory: Category;
+
+    before(async () => {
+      parentCategory = await Category.create({ name: "parent category" });
+    });
+
+    after(async () => {
+      await Category.dropTable();
+    });
+
     context("When user requests", () => {
       it("should create a new one and return the result of it", async () => {
         return request(app)
