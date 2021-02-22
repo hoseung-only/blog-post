@@ -1,9 +1,11 @@
 import { Router } from "express";
-import { body, param } from "express-validator";
+import { body } from "express-validator";
 
 import { validateParameters } from "../middlewares/validateParameters";
 
 import { Category } from "../../database/entities/category";
+
+import * as Presenters from "../presenters";
 
 export const applyCategoryRouters = (rootRouter: Router) => {
   const router = Router();
@@ -36,49 +38,17 @@ export const applyCategoryRouters = (rootRouter: Router) => {
     }
   );
 
-  router.get(
-    "/:id",
-    param("id").isNumeric().withMessage("id must be number"),
-    validateParameters,
-    async (req, res, next) => {
-      try {
-        const id = Number(req.params.id);
+  router.get("/list", async (req, res, next) => {
+    try {
+      const categories = await Category.findAll();
 
-        const result = await Category.findById(id);
-
-        if (!result) {
-          return res.status(404).json({
-            message: `category of id [${id}] is not exist`,
-          });
-        }
-
-        return res.status(200).json({
-          result,
-        });
-      } catch (error) {
-        return next(error);
-      }
+      return res
+        .status(200)
+        .json(Presenters.presentAllCategories({ categories }));
+    } catch (error) {
+      return next(error);
     }
-  );
-
-  router.get(
-    "/:id/children",
-    param("id").isNumeric().withMessage("id must be number"),
-    validateParameters,
-    async (req, res, next) => {
-      try {
-        const id = Number(req.params.id);
-
-        const result = await Category.findByParentId(id);
-
-        return res.status(200).json({
-          result: result.length > 0 ? result : null,
-        });
-      } catch (error) {
-        return next(error);
-      }
-    }
-  );
+  });
 
   rootRouter.use("/category", router);
 };
