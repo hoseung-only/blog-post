@@ -55,6 +55,10 @@ export class Category {
     (await this.getRepository()).delete(ids);
   }
 
+  public static async findAll() {
+    return (await this.getRepository()).find();
+  }
+
   /**
    * This method only used for test.
    */
@@ -75,9 +79,9 @@ export class Category {
   name: string;
 
   @Column({ name: "parent_id", nullable: true })
-  parentId?: number;
+  parentId: number | null;
 
   @ManyToOne(() => Category, { onDelete: "CASCADE" })
   @JoinColumn({ name: "parent_id" })
-  parent?: Category;
+  parent: Category | null;
 }
