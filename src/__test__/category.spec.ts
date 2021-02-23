@@ -80,7 +80,7 @@ describe("Category Routers", () => {
           .send({ name: "category" })
           .expect(201)
           .then((response) => {
-            const { result } = response.body;
+            const result = response.body;
 
             expect(result).to.be.deep.contains({ name: "category" });
           })
@@ -97,11 +97,11 @@ describe("Category Routers", () => {
           .send({ name: "category", parentId: parentCategory.id })
           .expect(201)
           .then((response) => {
-            const { result } = response.body;
+            const result = response.body;
 
             expect(result).to.be.deep.contains({
               name: "category",
-              parent: parentCategory,
+              parentId: parentCategory.id,
             });
           })
           .catch((error) => {

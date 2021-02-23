@@ -27,11 +27,9 @@ export const applyCategoryRouters = (rootRouter: Router) => {
         const name = req.body.name as string;
         const parentId = (req.body.parentId as number) || undefined;
 
-        const result = await Category.create({ name, parentId });
+        const category = await Category.create({ name, parentId });
 
-        return res.status(201).json({
-          result,
-        });
+        return res.status(201).json(Presenters.presentCategory({ category }));
       } catch (error) {
         return next(error);
       }
