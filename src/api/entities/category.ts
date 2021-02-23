@@ -1,3 +1,9 @@
+export interface Category {
+  id: number;
+  name: string;
+  parentId: number | null;
+}
+
 export interface ChildCategory {
   id: number;
   name: string;
