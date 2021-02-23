@@ -32,8 +32,22 @@ function renderAllCategories(
   };
 }
 
+function renderCategory(category: Category): Entities.Category {
+  return {
+    id: category.id,
+    name: category.name,
+    parentId: category.parentId,
+  };
+}
+
 export function presentAllCategories(input: {
   categories: Category[];
 }): Entities.AllCategoriesShow {
   return renderAllCategories(input.categories);
+}
+
+export function presentCategory(input: {
+  category: Category;
+}): Entities.Category {
+  return renderCategory(input.category);
 }
