@@ -17,7 +17,7 @@ function renderPost(post: Post): Entities.Post {
 function renderPostList(
   posts: Post[],
   nextCursor: number | null
-): Entities.PostList {
+): Entities.PostListShow {
   const renderedPosts = posts.map((post) => renderPost(post));
 
   return {
@@ -33,6 +33,6 @@ export function presentPost(input: { post: Post }): Entities.Post {
 export function presentPostList(input: {
   posts: Post[];
   nextCursor: number | null;
-}): Entities.PostList {
+}): Entities.PostListShow {
   return renderPostList(input.posts, input.nextCursor);
 }

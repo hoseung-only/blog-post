@@ -6,7 +6,7 @@ export interface Post {
   createdAt: number;
 }
 
-export interface PostList {
+export interface PostListShow {
   posts: Post[];
   nextCursor: number | null;
 }
