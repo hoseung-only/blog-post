@@ -6,7 +6,9 @@
     "deploy": "serverless deploy",
     "start": "serverless offline",
     "format": "prettier --write 'src/**/*.ts'",
-    "test": "MYSQL_HOST=0.0.0.0 MYSQL_PORT=3306 MYSQL_USER=hsjang MYSQL_PASSWORD=password MYSQL_DATABASE=blog nyc --exclude='src/**/__test__' mocha --require ts-node/register --exit -t 5000 src/**/__test__/*.spec.ts"
+    "test": "MYSQL_HOST=0.0.0.0 MYSQL_PORT=3306 MYSQL_USER=hsjang MYSQL_PASSWORD=password MYSQL_DATABASE=blog mocha --require ts-node/register --exit -t 5000 src/**/__test__/*.spec.ts",
+    "coverage": "nyc --exclude='src/**/__test__' npm run test",
+    "coverage:summary": "nyc --exclude='src/**/__test__' --reporter=text-summary npm run test"
   },
   "author": "Alvin Jang <hsjang.dev@gmail.com>",
   "devDependencies": {
