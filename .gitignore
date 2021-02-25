@@ -7,3 +7,6 @@ node_modules
 
 # environment variables
 env
+
+# code coverage test output
+.nyc_output
