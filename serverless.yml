@@ -6,18 +6,11 @@ provider:
   region: ap-northeast-2
   stage: prod
   environment: ${file(./env/mysql.yml)}
-  apiGateway:
-    shouldStartNameWithService: true
   lambdaHashingVersion: 20201221
 
 plugins:
   - serverless-plugin-typescript
-  - serverless-offline
 
 functions:
   api:
     handler: src/index.handler
-    events:
-      - http:
-          path: /{proxy+}
-          method: any
