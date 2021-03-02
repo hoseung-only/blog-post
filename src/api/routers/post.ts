@@ -91,5 +91,22 @@ export const applyPostRouters = (rootRouter: Router) => {
     }
   );
 
+  router.delete(
+    "/",
+    body("ids").isArray().withMessage("ids must be number array"),
+    validateParameters,
+    async (req, res, next) => {
+      try {
+        const ids = req.body.ids as number[];
+
+        await Post.deleteByIds(ids);
+
+        return res.status(200).json(Presenters.presentSuccess(true));
+      } catch (error) {
+        return next(error);
+      }
+    }
+  );
+
   rootRouter.use("/post", router);
 };

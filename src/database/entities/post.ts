@@ -50,7 +50,11 @@ export class Post {
 
     return await repository.save(post);
   }
-  
+
+  public static async deleteByIds(ids: number[]) {
+    await (await this.getRepository()).delete(ids);
+  }
+
   /**
    * This method only used for test.
    */
