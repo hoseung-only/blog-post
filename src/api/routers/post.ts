@@ -35,11 +35,11 @@ export const applyPostRouters = (rootRouter: Router) => {
 
   router.get(
     "/:id",
-    param("id").isString().withMessage("id must be string"),
+    param("id").isNumeric().withMessage("id must be number"),
     validateParameters,
     async (req, res, next) => {
       try {
-        const id = req.params.id as string;
+        const id = Number(req.params.id);
 
         const post = await Post.findById(id);
 

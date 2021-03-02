@@ -27,7 +27,7 @@ export class Post {
     });
   }
 
-  public static async findById(id: string) {
+  public static async findById(id: number) {
     return (await this.getRepository()).findOne(id);
   }
 
@@ -50,7 +50,7 @@ export class Post {
 
     return await repository.save(post);
   }
-
+  
   /**
    * This method only used for test.
    */
