@@ -147,4 +147,35 @@ describe("Post Routers", () => {
       });
     });
   });
+
+  describe("DELETE / : delete posts by ids", () => {
+    context("When user removes posts", () => {
+      let postIds: number[];
+
+      before(async () => {
+        const category = await Category.create({ name: "category" });
+        postIds = (
+          await Promise.all(
+            _.times(5, () =>
+              Post.create({ title: "", content: "", categoryId: category.id })
+            )
+          )
+        ).map((post) => post.id);
+      });
+
+      it("should remove posts by given ids and return success", async () => {
+        return request(app)
+          .delete("/post")
+          .set("Content-Type", "application/json")
+          .send({ ids: postIds })
+          .expect(200)
+          .then(async (response) => {
+            expect(response.body.success).to.be.true;
+          })
+          .catch((error) => {
+            throw error;
+          });
+      });
+    });
+  });
 });
