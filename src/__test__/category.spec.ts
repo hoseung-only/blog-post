@@ -164,4 +164,31 @@ describe("Category Routers", () => {
       }
     );
   });
+
+  describe("DELETE / : delete categories by ids", () => {
+    let categoryIds: number[];
+
+    before(async () => {
+      categoryIds = (
+        await Promise.all(
+          _.times(5, () => Category.create({ name: "category" }))
+        )
+      ).map((post) => post.id);
+    });
+
+    context("When user requests to delete categories", () => {
+      it("should delete categories by given ids and return success", async () => {
+        return request(app)
+          .delete("/categories")
+          .send({ ids: categoryIds })
+          .expect(200)
+          .then((response) => {
+            expect(response.body.success).to.be.true;
+          })
+          .catch((error) => {
+            throw error;
+          });
+      });
+    });
+  });
 });
