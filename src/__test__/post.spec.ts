@@ -131,7 +131,6 @@ describe("Post Routers", () => {
 
         return request(app)
           .post("/posts")
-          .set("Content-Type", "application/json")
           .send({ title, content, categoryId })
           .expect(201)
           .then((response) => {
@@ -149,7 +148,7 @@ describe("Post Routers", () => {
   });
 
   describe("DELETE / : delete posts by ids", () => {
-    context("When user removes posts", () => {
+    context("When user requests to delete posts", () => {
       let postIds: number[];
 
       before(async () => {
@@ -163,11 +162,10 @@ describe("Post Routers", () => {
         ).map((post) => post.id);
       });
 
-      it("should remove posts by given ids and return success", async () => {
+      it("should delete posts by given ids and return success", async () => {
         return request(app)
           .delete("/posts")
-          .set("Content-Type", "application/json")
-          .send({ ids: postIds })
+          .send({ ids: [] })
           .expect(200)
           .then(async (response) => {
             expect(response.body.success).to.be.true;
