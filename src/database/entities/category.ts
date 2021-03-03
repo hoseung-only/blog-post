@@ -52,7 +52,7 @@ export class Category {
   }
 
   public static async deleteByIds(ids: number[]) {
-    (await this.getRepository()).delete(ids);
+    await (await this.getRepository()).delete(ids);
   }
 
   public static async findAll() {
