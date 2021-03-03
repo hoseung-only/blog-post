@@ -93,7 +93,11 @@ export const applyPostRouters = (rootRouter: Router) => {
 
   router.delete(
     "/",
-    body("ids").isArray().withMessage("ids must be number array"),
+    body("ids")
+      .isArray()
+      .withMessage("ids must be number array")
+      .isLength({ min: 1 })
+      .withMessage("ids must have at least 1 element"),
     validateParameters,
     async (req, res, next) => {
       try {
