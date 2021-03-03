@@ -12,7 +12,7 @@ function renderAllCategories(
     .thru((group) => [group["true"] ?? [], group["false"] ?? []])
     .value();
 
-  const childMapByParentId = new Map<number, Entities.ChildCategory[]>();
+  const childMapByParentId = new Map<number, { id: number, name: string }[]>();
 
   childCategories.forEach((child) => {
     const children = childMapByParentId.get(child.parentId!) ?? [];

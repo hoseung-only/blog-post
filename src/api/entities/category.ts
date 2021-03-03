@@ -4,17 +4,13 @@ export interface Category {
   parentId: number | null;
 }
 
-export interface ChildCategory {
-  id: number;
-  name: string;
-}
-
-export interface ParentCategory {
-  id: number;
-  name: string;
-  children: ChildCategory[];
-}
-
 export interface AllCategoriesShow {
-  data: ParentCategory[];
+  data: {
+    id: number;
+    name: string;
+    children: {
+      id: number;
+      name: string;
+    }[];
+  }[];
 }
