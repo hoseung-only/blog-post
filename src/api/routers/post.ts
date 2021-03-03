@@ -13,7 +13,7 @@ export const applyPostRouters = (rootRouter: Router) => {
   const router = Router();
 
   router.get(
-    "/list",
+    "/",
     query("cursor").isNumeric().withMessage("cursor must be number").optional(),
     validateParameters,
     async (req, res, next) => {
@@ -108,5 +108,5 @@ export const applyPostRouters = (rootRouter: Router) => {
     }
   );
 
-  rootRouter.use("/post", router);
+  rootRouter.use("/posts", router);
 };

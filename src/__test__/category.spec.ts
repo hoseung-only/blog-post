@@ -7,11 +7,11 @@ import { app } from "../app";
 import { Category } from "../database/entities/category";
 
 describe("Category Routers", () => {
-  describe("GET /list : get all categories", () => {
+  describe("GET / : get all categories", () => {
     context("When user requests but there are no categories", () => {
       it("should return empty array", async () => {
         return request(app)
-          .get("/category/list")
+          .get("/categories")
           .expect(200)
           .then((response) => {
             const { data } = response.body;
@@ -45,7 +45,7 @@ describe("Category Routers", () => {
 
       it("should return categories", async () => {
         return request(app)
-          .get("/category/list")
+          .get("/categories")
           .expect(200)
           .then((response) => {
             const { data } = response.body;
@@ -76,7 +76,7 @@ describe("Category Routers", () => {
     context("When user requests", () => {
       it("should create a new one and return the result of it", async () => {
         return request(app)
-          .post("/category")
+          .post("/categories")
           .send({ name: "category" })
           .expect(201)
           .then((response) => {
@@ -93,7 +93,7 @@ describe("Category Routers", () => {
     context("When user requests with the id of parent category", () => {
       it("should create a new one and return the result of it", async () => {
         return request(app)
-          .post("/category")
+          .post("/categories")
           .send({ name: "category", parentId: parentCategory.id })
           .expect(201)
           .then((response) => {
@@ -113,7 +113,7 @@ describe("Category Routers", () => {
     context("When user requests with the invalid id of parent category", () => {
       it("should return error response", async () => {
         return request(app)
-          .post("/category")
+          .post("/categories")
           .send({ name: "category", parentId: 12345 })
           .expect(400)
           .then((response) => {
@@ -147,7 +147,7 @@ describe("Category Routers", () => {
 
         it("should return error response", async () => {
           return request(app)
-            .post("/category")
+            .post("/categories")
             .send({ name: "category", parentId })
             .expect(400)
             .then((response) => {

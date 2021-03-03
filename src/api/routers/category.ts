@@ -36,7 +36,7 @@ export const applyCategoryRouters = (rootRouter: Router) => {
     }
   );
 
-  router.get("/list", async (req, res, next) => {
+  router.get("/", async (req, res, next) => {
     try {
       const categories = await Category.findAll();
 
@@ -48,5 +48,5 @@ export const applyCategoryRouters = (rootRouter: Router) => {
     }
   });
 
-  rootRouter.use("/category", router);
+  rootRouter.use("/categories", router);
 };

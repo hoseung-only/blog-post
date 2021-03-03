@@ -33,7 +33,7 @@ describe("Post Routers", () => {
     context("When user requests", () => {
       it("should return requested post", async () => {
         return request(app)
-          .get(`/post/${post.id}`)
+          .get(`/posts/${post.id}`)
           .expect(200)
           .then((response) => {
             const result = response.body;
@@ -53,7 +53,7 @@ describe("Post Routers", () => {
     });
   });
 
-  describe("GET /list : get post list", () => {
+  describe("GET / : get post list", () => {
     before(async () => {
       const { id } = await Category.create({ name: "category" });
       await Promise.all(
@@ -75,7 +75,7 @@ describe("Post Routers", () => {
     context("When user requests with specific cursor", () => {
       it("should return post list starting with id 10", async () => {
         return request(app)
-          .get("/post/list")
+          .get("/posts")
           .query({ cursor: 10 })
           .expect(200)
           .then((response) => {
@@ -97,7 +97,7 @@ describe("Post Routers", () => {
     context("When user requests without any specific cursor", () => {
       it("should return post list starting with id 1", async () => {
         return request(app)
-          .get("/post/list")
+          .get("/posts")
           .expect(200)
           .then((response) => {
             const { posts, nextCursor } = response.body;
@@ -130,7 +130,7 @@ describe("Post Routers", () => {
         const content = "content";
 
         return request(app)
-          .post("/post")
+          .post("/posts")
           .set("Content-Type", "application/json")
           .send({ title, content, categoryId })
           .expect(201)
@@ -165,7 +165,7 @@ describe("Post Routers", () => {
 
       it("should remove posts by given ids and return success", async () => {
         return request(app)
-          .delete("/post")
+          .delete("/posts")
           .set("Content-Type", "application/json")
           .send({ ids: postIds })
           .expect(200)
