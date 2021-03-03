@@ -48,5 +48,26 @@ export const applyCategoryRouters = (rootRouter: Router) => {
     }
   });
 
+  router.delete(
+    "/",
+    body("ids")
+      .isArray()
+      .withMessage("ids must be number array")
+      .isLength({ min: 1 })
+      .withMessage("ids must have at least 1 element"),
+    validateParameters,
+    async (req, res, next) => {
+      try {
+        const ids = req.body.ids as number[];
+
+        await Category.deleteByIds(ids);
+
+        return res.status(200).json(Presenters.presentSuccess(true));
+      } catch (error) {
+        return next(error);
+      }
+    }
+  );
+
   rootRouter.use("/categories", router);
 };
