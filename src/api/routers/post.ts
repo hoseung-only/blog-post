@@ -44,7 +44,7 @@ export const applyPostRouters = (rootRouter: Router) => {
         const post = await Post.findById(id);
 
         if (!post) {
-          return new ErrorResponse(404, `post of id [${id}] is not exist`);
+          throw new ErrorResponse(404, `post of id [${id}] is not exist`);
         }
 
         return res.status(200).json(Presenters.presentPost({ post }));
