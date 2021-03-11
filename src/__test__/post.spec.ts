@@ -165,7 +165,7 @@ describe("Post Routers", () => {
       it("should delete posts by given ids and return success", async () => {
         return request(app)
           .delete("/posts")
-          .send({ ids: [] })
+          .send({ ids: postIds })
           .expect(200)
           .then(async (response) => {
             expect(response.body.success).to.be.true;
