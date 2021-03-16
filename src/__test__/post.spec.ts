@@ -102,11 +102,8 @@ describe("Post Routers", () => {
           .then((response) => {
             const { posts, nextCursor } = response.body;
 
-            // maximun of list length is 10
             expect(posts.length).to.be.eq(10);
-            // id of first post should be 1
             expect(posts[0].id).to.be.eq(1);
-            // next cursor should be 11
             expect(nextCursor).to.be.eq(11);
           })
           .catch((error) => {
