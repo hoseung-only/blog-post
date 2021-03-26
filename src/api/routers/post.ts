@@ -92,18 +92,14 @@ export const applyPostRouters = (rootRouter: Router) => {
   );
 
   router.delete(
-    "/",
-    body("ids")
-      .isArray()
-      .withMessage("ids must be number array")
-      .isLength({ min: 1 })
-      .withMessage("ids must have at least 1 element"),
+    "/:id",
+    param("id").isNumeric().withMessage("ids must be number"),
     validateParameters,
     async (req, res, next) => {
       try {
-        const ids = req.body.ids as number[];
+        const id = Number(req.params.id);
 
-        await Post.deleteByIds(ids);
+        await Post.deleteByIds([id]);
 
         return res.status(200).json(Presenters.presentSuccess(true));
       } catch (error) {

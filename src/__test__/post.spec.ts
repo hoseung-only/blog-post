@@ -146,23 +146,21 @@ describe("Post Routers", () => {
 
   describe("DELETE / : delete posts by ids", () => {
     context("When user requests to delete posts", () => {
-      let postIds: number[];
+      let postId: number;
 
       before(async () => {
         const category = await Category.create({ name: "category" });
-        postIds = (
-          await Promise.all(
-            _.times(5, () =>
-              Post.create({ title: "", content: "", categoryId: category.id })
-            )
-          )
-        ).map((post) => post.id);
+        const post = await Post.create({
+          title: "",
+          content: "",
+          categoryId: category.id,
+        });
+        postId = post.id;
       });
 
       it("should delete posts by given ids and return success", async () => {
         return request(app)
-          .delete("/posts")
-          .send({ ids: postIds })
+          .delete(`/posts/${postId}`)
           .expect(200)
           .then(async (response) => {
             expect(response.body.success).to.be.true;
