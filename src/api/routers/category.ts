@@ -50,7 +50,7 @@ export const applyCategoryRouters = (rootRouter: Router) => {
 
   router.delete(
     "/:id",
-    param("id").isNumeric().withMessage("ids must be number"),
+    param("id").isNumeric().withMessage("id must be number"),
     validateParameters,
     async (req, res, next) => {
       try {
