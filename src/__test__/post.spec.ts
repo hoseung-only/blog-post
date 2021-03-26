@@ -144,20 +144,20 @@ describe("Post Routers", () => {
     });
   });
 
-  describe("DELETE / : delete posts by ids", () => {
-    context("When user requests to delete posts", () => {
-      let postId: number;
+  describe("DELETE /:id : delete post by id", () => {
+    let postId: number;
 
-      before(async () => {
-        const category = await Category.create({ name: "category" });
-        const post = await Post.create({
-          title: "",
-          content: "",
-          categoryId: category.id,
-        });
-        postId = post.id;
+    before(async () => {
+      const category = await Category.create({ name: "category" });
+      const post = await Post.create({
+        title: "",
+        content: "",
+        categoryId: category.id,
       });
+      postId = post.id;
+    });
 
+    context("When user requests to delete specific post", () => {
       it("should delete posts by given ids and return success", async () => {
         return request(app)
           .delete(`/posts/${postId}`)

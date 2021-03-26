@@ -165,7 +165,7 @@ describe("Category Routers", () => {
     );
   });
 
-  describe("DELETE /:id : delete categories by id", () => {
+  describe("DELETE /:id : delete category by id", () => {
     let categoryId: number;
 
     before(async () => {
@@ -173,7 +173,7 @@ describe("Category Routers", () => {
       categoryId = category.id;
     });
 
-    context("When user requests to delete categories", () => {
+    context("When user requests to delete specific category", () => {
       it("should delete categories by given ids and return success", async () => {
         return request(app)
           .delete(`/categories/${categoryId}`)
