@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 
 import { validateParameters } from "../middlewares/validateParameters";
 
@@ -49,18 +49,14 @@ export const applyCategoryRouters = (rootRouter: Router) => {
   });
 
   router.delete(
-    "/",
-    body("ids")
-      .isArray()
-      .withMessage("ids must be number array")
-      .isLength({ min: 1 })
-      .withMessage("ids must have at least 1 element"),
+    "/:id",
+    param("id").isNumeric().withMessage("ids must be number"),
     validateParameters,
     async (req, res, next) => {
       try {
-        const ids = req.body.ids as number[];
+        const id = Number(req.params.id);
 
-        await Category.deleteByIds(ids);
+        await Category.deleteByIds([id]);
 
         return res.status(200).json(Presenters.presentSuccess(true));
       } catch (error) {
