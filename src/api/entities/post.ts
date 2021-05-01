@@ -1,3 +1,5 @@
+import { PaginatedEntity } from "./paginated";
+
 export interface Post {
   id: number;
   title: string;
@@ -6,7 +8,4 @@ export interface Post {
   createdAt: number;
 }
 
-export interface PostListShow {
-  posts: Post[];
-  nextCursor: number | null;
-}
+export type PostListShow = PaginatedEntity<Post>;
