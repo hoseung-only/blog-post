@@ -21,7 +21,7 @@ function renderPostList(
   const renderedPosts = posts.map((post) => renderPost(post));
 
   return {
-    posts: renderedPosts,
+    data: renderedPosts,
     nextCursor,
   };
 }
