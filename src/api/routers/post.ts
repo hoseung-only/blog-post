@@ -82,7 +82,10 @@ export const applyPostRouters = (rootRouter: Router) => {
         const category = await Category.findById(categoryId);
 
         if (!category) {
-          throw new ErrorResponse(400, `category of id [${categoryId}] does not exist`)
+          throw new ErrorResponse(
+            400,
+            `category of id [${categoryId}] does not exist`
+          );
         }
 
         const post = await Post.create({
