@@ -17,6 +17,20 @@ export class Category {
     return (await getConnection()).getRepository(this);
   }
 
+  private static async findParentById(id: number) {
+    const parent = await this.findById(id);
+
+    if (parent) {
+      if (!parent.parentId) {
+        return parent;
+      } else {
+        throw new ErrorResponse(400, "Depth of categories has to be up to 2");
+      }
+    } else {
+      throw new ErrorResponse(400, "Provided parent category does not exist");
+    }
+  }
+
   public static async create(attributes: { name: string; parentId?: number }) {
     const { name, parentId = null } = attributes;
 
@@ -24,20 +38,31 @@ export class Category {
     category.name = name;
 
     if (parentId) {
-      const parent = await this.findById(parentId);
+      category.parent = await this.findParentById(parentId);
+    }
 
-      if (parent) {
-        if (!parent.parentId) {
-          category.parent = parent;
-        } else {
-          throw new ErrorResponse(
-            400,
-            "Depth of categories have to be up to 2"
-          );
-        }
-      } else {
-        throw new ErrorResponse(400, "Provided parent category does not exist");
-      }
+    return (await this.getRepository()).save(category);
+  }
+
+  public static async edit({
+    id,
+    name,
+    parentId,
+  }: {
+    id: number;
+    name: string;
+    parentId?: number;
+  }) {
+    const category = await this.findById(id);
+
+    if (!category) {
+      throw new ErrorResponse(404, "Category does not exist");
+    }
+
+    category.name = name;
+
+    if (parentId) {
+      category.parent = await this.findParentById(parentId);
     }
 
     return (await this.getRepository()).save(category);
