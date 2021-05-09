@@ -144,6 +144,33 @@ describe("Post Routers", () => {
     });
   });
 
+  describe("PUT /:id : edit post", () => {
+    context("When user requests to edit post", () => {
+      let post: Post;
+      let category: Category;
+
+      before(async () => {
+        post = await Post.create({ title: "asdf", content: "asdf" });
+        category = await Category.create({ name: "asdf" });
+      });
+
+      it("should return edited post", async () => {
+        return request(app)
+          .put(`/posts/${post.id}`)
+          .send({ title: "qwer", content: "qwer", categoryId: category.id })
+          .expect(200)
+          .then((response) => {
+            expect(response.body.title).to.be.eq("qwer");
+            expect(response.body.content).to.be.eq("qwer");
+            expect(response.body.categoryId).to.be.eq(category.id);
+          })
+          .catch((error) => {
+            throw error;
+          });
+      });
+    });
+  });
+
   describe("DELETE /:id : delete post by id", () => {
     let postId: number;
 
