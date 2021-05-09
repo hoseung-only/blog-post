@@ -13,6 +13,8 @@ import { Category } from "./category";
 
 import { getConnection } from "../getConnection";
 
+import { ErrorResponse } from "../../utils/error";
+
 @Entity()
 export class Post {
   private static async getRepository() {
@@ -49,6 +51,30 @@ export class Post {
     post.categoryId = categoryId ?? null;
 
     return await repository.save(post);
+  }
+
+  public static async edit({
+    id,
+    title,
+    content,
+    categoryId,
+  }: {
+    id: number;
+    title: string;
+    content: string;
+    categoryId?: number;
+  }) {
+    const post = await this.findById(id);
+
+    if (!post) {
+      throw new ErrorResponse(404, "Post does not exist");
+    }
+
+    post.title = title;
+    post.content = content;
+    post.categoryId = categoryId ?? null;
+
+    return (await this.getRepository()).save(post);
   }
 
   public static async deleteByIds(ids: number[]) {
