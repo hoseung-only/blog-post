@@ -19,7 +19,7 @@ export const applyCategoryRouters = (rootRouter: Router) => {
       .withMessage("name must be provided"),
     body("parentId")
       .isNumeric()
-      .withMessage("parentId must be string")
+      .withMessage("parentId must be number")
       .optional(),
     validateParameters,
     async (req, res, next) => {
