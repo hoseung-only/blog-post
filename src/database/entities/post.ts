@@ -38,7 +38,7 @@ export class Post {
   }: {
     title: string;
     content: string;
-    categoryId: number;
+    categoryId?: number;
   }) {
     const repository = await this.getRepository();
 
@@ -46,7 +46,7 @@ export class Post {
 
     post.title = title;
     post.content = content;
-    post.categoryId = categoryId;
+    post.categoryId = categoryId ?? null;
 
     return await repository.save(post);
   }
@@ -76,7 +76,7 @@ export class Post {
   createdAt: Date;
 
   @Column({ name: "category_id", nullable: true })
-  categoryId: number;
+  categoryId: number | null;
 
   @ManyToOne(() => Category, { onDelete: "CASCADE" })
   @JoinColumn({ name: "category_id" })

@@ -6,7 +6,6 @@ import { ErrorResponse } from "../../utils/error";
 import { validateParameters } from "../middlewares/validateParameters";
 
 import { Post } from "../../database/entities/post";
-import { Category } from "../../database/entities/category";
 
 import * as Presenters from "../presenters";
 
@@ -70,23 +69,13 @@ export const applyPostRouters = (rootRouter: Router) => {
     body("categoryId")
       .isNumeric()
       .withMessage("categoryId must be number")
-      .exists()
-      .withMessage("categoryId must be provided"),
+      .optional(),
     validateParameters,
     async (req, res, next) => {
       try {
         const title = req.body.title as string;
         const content = req.body.content as string;
-        const categoryId = Number(req.body.categoryId);
-
-        const category = await Category.findById(categoryId);
-
-        if (!category) {
-          throw new ErrorResponse(
-            400,
-            `category of id [${categoryId}] does not exist`
-          );
-        }
+        const categoryId = req.body.categoryId as number | undefined;
 
         const post = await Post.create({
           title,
