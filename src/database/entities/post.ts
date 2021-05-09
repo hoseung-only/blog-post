@@ -1,3 +1,4 @@
+import * as _ from "lodash";
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -7,6 +8,7 @@ import {
   JoinColumn,
   Index,
   MoreThanOrEqual,
+  In,
 } from "typeorm";
 
 import { Category } from "./category";
@@ -24,6 +26,29 @@ export class Post {
   public static async findByCursor(cursor: number) {
     return (await this.getRepository()).find({
       where: { id: MoreThanOrEqual(cursor) },
+      order: { id: "ASC" },
+      take: 10,
+    });
+  }
+
+  public static async findCategoryPostsByCursor(
+    cursor: number,
+    categoryId: number
+  ) {
+    const categoryIds = _.chain(
+      await Promise.all([
+        (await Category.findById(categoryId))?.id,
+        (await Category.findByParentId(categoryId)).map(
+          (category) => category.id
+        ),
+      ])
+    )
+      .flatten()
+      .compact()
+      .value();
+
+    return (await this.getRepository()).find({
+      where: { id: MoreThanOrEqual(cursor), categoryId: In(categoryIds) },
       order: { id: "ASC" },
       take: 10,
     });
