@@ -5,6 +5,7 @@ import { expect } from "chai";
 import { app } from "../app";
 
 import { Category } from "../database/entities/category";
+import { Post } from "../database/entities/post";
 
 describe("Category Routers", () => {
   describe("GET / : get all categories", () => {
@@ -226,6 +227,66 @@ describe("Category Routers", () => {
           .expect(200)
           .then((response) => {
             expect(response.body.success).to.be.true;
+          })
+          .catch((error) => {
+            throw error;
+          });
+      });
+    });
+  });
+
+  describe("GET /:id/posts : get category posts by cursor", () => {
+    let parent: Category;
+    let child: Category;
+
+    before(async () => {
+      parent = await Category.create({ name: "parent" });
+      child = await Category.create({ name: "child", parentId: parent.id });
+
+      await Promise.all(
+        _.times(3, () =>
+          Post.create({
+            title: "parent",
+            content: "content",
+            categoryId: parent.id,
+          })
+        )
+      );
+
+      await Promise.all(
+        _.times(3, () =>
+          Post.create({
+            title: "child",
+            content: "content",
+            categoryId: child.id,
+          })
+        )
+      );
+    });
+
+    context("When user requests posts of parent", () => {
+      it("should return posts including posts of child categories", async () => {
+        return request(app)
+          .get(`/categories/${parent.id}/posts`)
+          .expect(200)
+          .then((response) => {
+            expect(response.body.data.length).to.be.eq(6);
+            expect(response.body.nextCursor).to.be.null;
+          })
+          .catch((error) => {
+            throw error;
+          });
+      });
+    });
+
+    context("When user requests posts of child", () => {
+      it("should return posts of child category", async () => {
+        return request(app)
+          .get(`/categories/${child.id}/posts`)
+          .expect(200)
+          .then((response) => {
+            expect(response.body.data.length).to.be.eq(3);
+            expect(response.body.nextCursor).to.be.null;
           })
           .catch((error) => {
             throw error;
