@@ -63,6 +63,8 @@ export class Category {
 
     if (parentId) {
       category.parent = await this.findParentById(parentId);
+    } else {
+      category.parent = null;
     }
 
     return (await this.getRepository()).save(category);
