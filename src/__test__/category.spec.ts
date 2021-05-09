@@ -153,9 +153,7 @@ describe("Category Routers", () => {
             .then((response) => {
               const { message } = response.body;
 
-              expect(message).to.be.eq(
-                "Depth of categories has to be up to 2"
-              );
+              expect(message).to.be.eq("Depth of categories has to be up to 2");
             })
             .catch((error) => {
               throw error;
@@ -211,7 +209,7 @@ describe("Category Routers", () => {
           });
       });
     });
-  })
+  });
 
   describe("DELETE /:id : delete category by id", () => {
     let categoryId: number;
