@@ -154,7 +154,7 @@ describe("Category Routers", () => {
               const { message } = response.body;
 
               expect(message).to.be.eq(
-                "Depth of categories have to be up to 2"
+                "Depth of categories has to be up to 2"
               );
             })
             .catch((error) => {
@@ -164,6 +164,54 @@ describe("Category Routers", () => {
       }
     );
   });
+
+  describe("PUT /:id : edit category", () => {
+    let category: Category;
+    let parentCategory: Category;
+
+    before(async () => {
+      category = await Category.create({ name: "category" });
+      parentCategory = await Category.create({ name: "parent" });
+    });
+
+    after(async () => {
+      await Category.dropTable();
+    });
+
+    context("When user requests to edit name", () => {
+      it("should return edited category", async () => {
+        return request(app)
+          .put(`/categories/${category.id}`)
+          .send({ name: "edited category" })
+          .expect(200)
+          .then((response) => {
+            const result = response.body;
+
+            expect(result.name).to.be.eq("edited category");
+          })
+          .catch((error) => {
+            throw error;
+          });
+      });
+    });
+
+    context("When user requests to set parent", () => {
+      it("should return edited category", async () => {
+        return request(app)
+          .put(`/categories/${category.id}`)
+          .send({ name: "edited category", parentId: parentCategory.id })
+          .expect(200)
+          .then((response) => {
+            const result = response.body;
+
+            expect(result.parentId).to.be.eq(parentCategory.id);
+          })
+          .catch((error) => {
+            throw error;
+          });
+      });
+    });
+  })
 
   describe("DELETE /:id : delete category by id", () => {
     let categoryId: number;
