@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { body, param } from "express-validator";
+import { body, param, query } from "express-validator";
 
 import { validateParameters } from "../middlewares/validateParameters";
 
 import { Category } from "../../database/entities/category";
+import { Post } from "../../database/entities/post";
 
 import * as Presenters from "../presenters";
 
@@ -77,6 +78,29 @@ export const applyCategoryRouters = (rootRouter: Router) => {
       return next(error);
     }
   });
+
+  router.get(
+    "/:id/posts",
+    param("id").isNumeric().withMessage("id must be number"),
+    query("cursor").isNumeric().withMessage("cursor must be number").optional(),
+    validateParameters,
+    async (req, res, next) => {
+      try {
+        const cursor = req.query.cursor ? Number(req.query.cursor) : 0;
+        const categoryId = Number(req.params.id);
+
+        const posts = await Post.findCategoryPostsByCursor(cursor, categoryId);
+        const nextCursor =
+          posts.length === 10 ? posts[posts.length - 1].id + 1 : null;
+
+        return res
+          .status(200)
+          .json(Presenters.presentPostList({ posts, nextCursor }));
+      } catch (error) {
+        return next(error);
+      }
+    }
+  );
 
   router.delete(
     "/:id",
