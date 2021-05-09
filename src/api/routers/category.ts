@@ -25,11 +25,41 @@ export const applyCategoryRouters = (rootRouter: Router) => {
     async (req, res, next) => {
       try {
         const name = req.body.name as string;
-        const parentId = (req.body.parentId as number) || undefined;
+        const parentId = req.body.parentId as number | undefined;
 
         const category = await Category.create({ name, parentId });
 
         return res.status(201).json(Presenters.presentCategory({ category }));
+      } catch (error) {
+        return next(error);
+      }
+    }
+  );
+
+  router.put(
+    "/:id",
+    param("id").isNumeric().withMessage("id must be number"),
+    body("name")
+      .isString()
+      .withMessage("name must be string")
+      .exists()
+      .withMessage("name must be provided"),
+    body("parentId")
+      .isNumeric()
+      .withMessage("parentId must be number")
+      .optional(),
+    validateParameters,
+    async (req, res, next) => {
+      try {
+        const id = Number(req.params.id);
+        const name = req.body.name as string;
+        const parentId = req.body.parentId as number | undefined;
+
+        const editedCategory = await Category.edit({ id, name, parentId });
+
+        return res
+          .status(200)
+          .json(Presenters.presentCategory({ category: editedCategory }));
       } catch (error) {
         return next(error);
       }
