@@ -79,12 +79,12 @@ describe("Post Routers", () => {
           .query({ cursor: 10 })
           .expect(200)
           .then((response) => {
-            const { posts, nextCursor } = response.body;
+            const { data, nextCursor } = response.body;
 
             // list length should be 6 (id 10 ~ 15)
-            expect(posts.length).to.be.eq(6);
+            expect(data.length).to.be.eq(6);
             // id of first post should be 10
-            expect(posts[0].id).to.be.eq(10);
+            expect(data[0].id).to.be.eq(10);
             // next cursor should be null (because there are no more posts)
             expect(nextCursor).to.be.null;
           })
@@ -100,10 +100,10 @@ describe("Post Routers", () => {
           .get("/posts")
           .expect(200)
           .then((response) => {
-            const { posts, nextCursor } = response.body;
+            const { data, nextCursor } = response.body;
 
-            expect(posts.length).to.be.eq(10);
-            expect(posts[0].id).to.be.eq(1);
+            expect(data.length).to.be.eq(10);
+            expect(data[0].id).to.be.eq(1);
             expect(nextCursor).to.be.eq(11);
           })
           .catch((error) => {
