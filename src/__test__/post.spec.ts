@@ -41,6 +41,7 @@ describe("Post Routers", () => {
             expect(result).to.be.deep.eq({
               id: post.id,
               title: post.title,
+              coverImageURL: null,
               content: post.content,
               categoryId: post.categoryId,
               createdAt: post.createdAt.valueOf(),

@@ -60,10 +60,12 @@ export class Post {
 
   public static async create({
     title,
+    coverImageURL,
     content,
     categoryId,
   }: {
     title: string;
+    coverImageURL?: string;
     content: string;
     categoryId?: number;
   }) {
@@ -72,6 +74,7 @@ export class Post {
     const post = repository.create();
 
     post.title = title;
+    post.coverImageURL = coverImageURL ?? null;
     post.content = content;
     post.categoryId = categoryId ?? null;
 
@@ -81,11 +84,13 @@ export class Post {
   public static async edit({
     id,
     title,
+    coverImageURL,
     content,
     categoryId,
   }: {
     id: number;
     title: string;
+    coverImageURL?: string;
     content: string;
     categoryId?: number;
   }) {
@@ -96,6 +101,7 @@ export class Post {
     }
 
     post.title = title;
+    post.coverImageURL = coverImageURL ?? null;
     post.content = content;
     post.categoryId = categoryId ?? null;
 
@@ -134,5 +140,5 @@ export class Post {
 
   @ManyToOne(() => Category, { onDelete: "CASCADE" })
   @JoinColumn({ name: "category_id" })
-  category: Category;
+  category: Category | null;
 }
