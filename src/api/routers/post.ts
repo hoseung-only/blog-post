@@ -63,7 +63,7 @@ export const applyPostRouters = (rootRouter: Router) => {
       .withMessage("title must be provided"),
     body("coverImageURL")
       .isString()
-      .withMessage("categoryId must be string")
+      .withMessage("coverImageURL must be string")
       .optional(),
     body("content")
       .isString()
@@ -106,7 +106,7 @@ export const applyPostRouters = (rootRouter: Router) => {
       .withMessage("title must be provided"),
     body("coverImageURL")
       .isString()
-      .withMessage("categoryId must be string")
+      .withMessage("coverImageURL must be string")
       .optional(),
     body("content")
       .isString()
