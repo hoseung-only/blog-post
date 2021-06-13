@@ -14,15 +14,17 @@ export const applyPostRouters = (rootRouter: Router) => {
 
   router.get(
     "/",
+    query("count").isNumeric().withMessage("count must be number"),
     query("cursor").isNumeric().withMessage("cursor must be number").optional(),
     validateParameters,
     async (req, res, next) => {
       try {
+        const count = Number(req.query.count);
         const cursor = req.query.cursor ? Number(req.query.cursor) : 0;
 
-        const posts = await Post.findByCursor(cursor);
+        const posts = await Post.findByCursor({ count, cursor });
         const nextCursor =
-          posts.length === 10 ? posts[posts.length - 1].id + 1 : null;
+          posts.length === count ? posts[posts.length - 1].id + 1 : null;
 
         return res
           .status(200)
@@ -74,6 +76,7 @@ export const applyPostRouters = (rootRouter: Router) => {
       .isNumeric()
       .withMessage("categoryId must be number")
       .optional(),
+    body("summary").isString().withMessage("summary must be string"),
     validateParameters,
     async (req, res, next) => {
       try {
@@ -81,12 +84,14 @@ export const applyPostRouters = (rootRouter: Router) => {
         const coverImageURL = req.body.coverImageURL as string | undefined;
         const content = req.body.content as string;
         const categoryId = req.body.categoryId as number | undefined;
+        const summary = req.body.summary as string;
 
         const post = await Post.create({
           title,
           coverImageURL,
           content,
           categoryId,
+          summary,
         });
 
         return res.status(201).json(Presenters.presentPost({ post }));
@@ -117,6 +122,7 @@ export const applyPostRouters = (rootRouter: Router) => {
       .isNumeric()
       .withMessage("categoryId must be number")
       .optional(),
+    body("summary").isString().withMessage("summary must be string"),
     validateParameters,
     async (req, res, next) => {
       try {
@@ -125,13 +131,15 @@ export const applyPostRouters = (rootRouter: Router) => {
         const coverImageURL = req.body.coverImageURL as string | undefined;
         const content = req.body.content as string;
         const categoryId = req.body.categoryId as number | undefined;
+        const summary = req.body.summary as string;
 
-        const post = await Post.edit({
+        const post = await Post.update({
           id,
           title,
           coverImageURL,
           content,
           categoryId,
+          summary,
         });
 
         return res.status(200).json(Presenters.presentPost({ post }));
