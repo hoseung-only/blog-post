@@ -23,11 +23,17 @@ export class Post {
     return (await getConnection()).getRepository(this);
   }
 
-  public static async findByCursor(cursor: number) {
+  public static async findByCursor({
+    count,
+    cursor,
+  }: {
+    count: number;
+    cursor: number;
+  }) {
     return (await this.getRepository()).find({
       where: { id: MoreThanOrEqual(cursor) },
       order: { id: "ASC" },
-      take: 10,
+      take: count,
     });
   }
 
@@ -63,11 +69,13 @@ export class Post {
     coverImageURL,
     content,
     categoryId,
+    summary,
   }: {
     title: string;
     coverImageURL?: string;
     content: string;
     categoryId?: number;
+    summary: string;
   }) {
     const repository = await this.getRepository();
 
@@ -77,22 +85,25 @@ export class Post {
     post.coverImageURL = coverImageURL ?? null;
     post.content = content;
     post.categoryId = categoryId ?? null;
+    post.summary = summary;
 
     return await repository.save(post);
   }
 
-  public static async edit({
+  public static async update({
     id,
     title,
     coverImageURL,
     content,
     categoryId,
+    summary,
   }: {
     id: number;
     title: string;
     coverImageURL?: string;
     content: string;
     categoryId?: number;
+    summary: string;
   }) {
     const post = await this.findById(id);
 
@@ -104,6 +115,7 @@ export class Post {
     post.coverImageURL = coverImageURL ?? null;
     post.content = content;
     post.categoryId = categoryId ?? null;
+    post.summary = summary;
 
     return (await this.getRepository()).save(post);
   }
@@ -131,6 +143,9 @@ export class Post {
 
   @Column({ type: "text" })
   content: string;
+
+  @Column({ type: "text" })
+  summary: string;
 
   @CreateDateColumn({ type: "datetime", name: "created_at" })
   createdAt: Date;
