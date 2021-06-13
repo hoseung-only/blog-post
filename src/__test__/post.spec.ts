@@ -22,6 +22,7 @@ describe("Post Routers", () => {
         title: "title",
         content: "content",
         categoryId: id,
+        summary: "summary",
       });
     });
 
@@ -43,6 +44,7 @@ describe("Post Routers", () => {
               title: post.title,
               coverImageURL: null,
               content: post.content,
+              summary: "summary",
               categoryId: post.categoryId,
               createdAt: post.createdAt.valueOf(),
             });
@@ -63,6 +65,7 @@ describe("Post Routers", () => {
             title: "title",
             content: "content",
             categoryId: id,
+            summary: "summary",
           })
         )
       );
@@ -77,7 +80,7 @@ describe("Post Routers", () => {
       it("should return post list starting with id 10", async () => {
         return request(app)
           .get("/posts")
-          .query({ cursor: 10 })
+          .query({ count: 10, cursor: 10 })
           .expect(200)
           .then((response) => {
             const { data, nextCursor } = response.body;
@@ -99,13 +102,14 @@ describe("Post Routers", () => {
       it("should return post list starting with id 1", async () => {
         return request(app)
           .get("/posts")
+          .query({ count: 5 })
           .expect(200)
           .then((response) => {
             const { data, nextCursor } = response.body;
 
-            expect(data.length).to.be.eq(10);
+            expect(data.length).to.be.eq(5);
             expect(data[0].id).to.be.eq(1);
-            expect(nextCursor).to.be.eq(11);
+            expect(nextCursor).to.be.eq(6);
           })
           .catch((error) => {
             throw error;
@@ -126,15 +130,17 @@ describe("Post Routers", () => {
       it("should create a new post", async () => {
         const title = "title";
         const content = "content";
+        const summary = "summary";
 
         return request(app)
           .post("/posts")
-          .send({ title, content, categoryId })
+          .send({ title, content, summary, categoryId })
           .expect(201)
           .then((response) => {
             expect(response.body).to.be.deep.contains({
               title,
               content,
+              summary,
               categoryId,
             });
           })
@@ -151,18 +157,28 @@ describe("Post Routers", () => {
       let category: Category;
 
       before(async () => {
-        post = await Post.create({ title: "asdf", content: "asdf" });
+        post = await Post.create({
+          title: "asdf",
+          content: "asdf",
+          summary: "asdf",
+        });
         category = await Category.create({ name: "asdf" });
       });
 
       it("should return edited post", async () => {
         return request(app)
           .put(`/posts/${post.id}`)
-          .send({ title: "qwer", content: "qwer", categoryId: category.id })
+          .send({
+            title: "qwer",
+            content: "qwer",
+            summary: "qwer",
+            categoryId: category.id,
+          })
           .expect(200)
           .then((response) => {
             expect(response.body.title).to.be.eq("qwer");
             expect(response.body.content).to.be.eq("qwer");
+            expect(response.body.summary).to.be.eq("qwer");
             expect(response.body.categoryId).to.be.eq(category.id);
           })
           .catch((error) => {
@@ -181,6 +197,7 @@ describe("Post Routers", () => {
         title: "",
         content: "",
         categoryId: category.id,
+        summary: "",
       });
       postId = post.id;
     });

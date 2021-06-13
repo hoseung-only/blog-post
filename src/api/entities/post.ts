@@ -7,6 +7,7 @@ export interface Post {
   content: string;
   categoryId: number | null;
   createdAt: number;
+  summary: string;
 }
 
 export type PostListShow = PaginatedEntity<Post>;
