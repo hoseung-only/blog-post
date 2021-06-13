@@ -249,7 +249,7 @@ describe("Category Routers", () => {
             title: "parent",
             content: "content",
             categoryId: parent.id,
-            summary: "summary"
+            summary: "summary",
           })
         )
       );
@@ -260,7 +260,7 @@ describe("Category Routers", () => {
             title: "child",
             content: "content",
             categoryId: child.id,
-            summary: "summary"
+            summary: "summary",
           })
         )
       );

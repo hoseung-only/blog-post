@@ -3,7 +3,15 @@ import { Post } from "../../database/entities/post";
 import * as Entities from "../entities";
 
 function renderPost(post: Post): Entities.Post {
-  const { id, title, coverImageURL, content, categoryId, createdAt, summary } = post;
+  const {
+    id,
+    title,
+    coverImageURL,
+    content,
+    categoryId,
+    createdAt,
+    summary,
+  } = post;
 
   return {
     id,
