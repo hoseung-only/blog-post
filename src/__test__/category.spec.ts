@@ -164,7 +164,7 @@ describe("Category Routers", () => {
     );
   });
 
-  describe("PUT /:id : edit category", () => {
+  describe("PUT /:id : update category", () => {
     let category: Category;
     let parentCategory: Category;
 
@@ -177,16 +177,16 @@ describe("Category Routers", () => {
       await Category.dropTable();
     });
 
-    context("When user requests to edit name", () => {
-      it("should return edited category", async () => {
+    context("When user requests to update name", () => {
+      it("should return updated category", async () => {
         return request(app)
           .put(`/categories/${category.id}`)
-          .send({ name: "edited category" })
+          .send({ name: "updated category" })
           .expect(200)
           .then((response) => {
             const result = response.body;
 
-            expect(result.name).to.be.eq("edited category");
+            expect(result.name).to.be.eq("updated category");
           })
           .catch((error) => {
             throw error;
@@ -195,10 +195,10 @@ describe("Category Routers", () => {
     });
 
     context("When user requests to set parent", () => {
-      it("should return edited category", async () => {
+      it("should return updated category", async () => {
         return request(app)
           .put(`/categories/${category.id}`)
-          .send({ name: "edited category", parentId: parentCategory.id })
+          .send({ name: "updated category", parentId: parentCategory.id })
           .expect(200)
           .then((response) => {
             const result = response.body;

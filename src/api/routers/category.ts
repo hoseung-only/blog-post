@@ -56,7 +56,7 @@ export const applyCategoryRouters = (rootRouter: Router) => {
         const name = req.body.name as string;
         const parentId = req.body.parentId as number | undefined;
 
-        const editedCategory = await Category.edit({ id, name, parentId });
+        const editedCategory = await Category.update({ id, name, parentId });
 
         return res
           .status(200)

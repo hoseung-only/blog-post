@@ -44,7 +44,7 @@ export class Category {
     return (await this.getRepository()).save(category);
   }
 
-  public static async edit({
+  public static async update({
     id,
     name,
     parentId,
