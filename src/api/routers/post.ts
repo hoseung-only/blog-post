@@ -103,7 +103,7 @@ export const applyPostRouters = (rootRouter: Router) => {
 
   router.put(
     "/:id",
-    param("id").isNumeric().withMessage("categoryId must be number"),
+    param("id").isNumeric().withMessage("postId must be number"),
     body("title")
       .isString()
       .withMessage("title must be string")
@@ -122,7 +122,7 @@ export const applyPostRouters = (rootRouter: Router) => {
       .isNumeric()
       .withMessage("categoryId must be number")
       .optional(),
-    body("summary").isString().withMessage("summary must be string"),
+    body("summary").isString().exists().withMessage("summary must be string"),
     validateParameters,
     async (req, res, next) => {
       try {
