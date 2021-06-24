@@ -14,7 +14,11 @@ export const applyPostRouters = (rootRouter: Router) => {
 
   router.get(
     "/",
-    query("count").isNumeric().withMessage("count must be number"),
+    query("count")
+      .isNumeric()
+      .withMessage("count must be number")
+      .exists()
+      .withMessage("count must be provided"),
     query("cursor").isNumeric().withMessage("cursor must be number").optional(),
     validateParameters,
     async (req, res, next) => {
