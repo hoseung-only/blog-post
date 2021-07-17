@@ -4,9 +4,7 @@ import { Category } from "../../database/entities/category";
 
 import * as Entities from "../entities";
 
-function renderAllCategories(
-  categories: Category[]
-): Entities.AllCategoriesShow {
+function renderAllCategories(categories: Category[]): Entities.AllCategoriesShow {
   const [childCategories, parentCategories] = _.chain(categories)
     .groupBy((category) => category.parentId !== null)
     .thru((group) => [group["true"] ?? [], group["false"] ?? []])
@@ -40,14 +38,10 @@ function renderCategory(category: Category): Entities.Category {
   };
 }
 
-export function presentAllCategories(input: {
-  categories: Category[];
-}): Entities.AllCategoriesShow {
+export function presentAllCategories(input: { categories: Category[] }): Entities.AllCategoriesShow {
   return renderAllCategories(input.categories);
 }
 
-export function presentCategory(input: {
-  category: Category;
-}): Entities.Category {
+export function presentCategory(input: { category: Category }): Entities.Category {
   return renderCategory(input.category);
 }

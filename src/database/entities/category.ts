@@ -1,11 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-  Index,
-} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Index } from "typeorm";
 
 import { getConnection } from "../getConnection";
 
@@ -44,15 +37,7 @@ export class Category {
     return (await this.getRepository()).save(category);
   }
 
-  public static async update({
-    id,
-    name,
-    parentId,
-  }: {
-    id: number;
-    name: string;
-    parentId?: number;
-  }) {
+  public static async update({ id, name, parentId }: { id: number; name: string; parentId?: number }) {
     const category = await this.findById(id);
 
     if (!category) {

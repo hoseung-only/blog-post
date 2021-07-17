@@ -9,9 +9,7 @@ export const validateParameters: RequestHandler = (req, res, next) => {
   if (!result.isEmpty()) {
     const error = new ErrorResponse(
       400,
-      result
-        .array()
-        .map((error) => `[ERROR] Parameter ${error.param}: ${error.msg}`)
+      result.array().map((error) => `[ERROR] Parameter ${error.param}: ${error.msg}`)
     );
 
     return next(error);

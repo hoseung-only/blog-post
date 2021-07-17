@@ -23,13 +23,7 @@ export class Post {
     return (await getConnection()).getRepository(this);
   }
 
-  public static async findByCursor({
-    count,
-    cursor,
-  }: {
-    count: number;
-    cursor: number;
-  }) {
+  public static async findByCursor({ count, cursor }: { count: number; cursor: number }) {
     return (await this.getRepository()).find({
       where: { id: MoreThanOrEqual(cursor) },
       order: { id: "ASC" },
@@ -37,16 +31,11 @@ export class Post {
     });
   }
 
-  public static async findCategoryPostsByCursor(
-    cursor: number,
-    categoryId: number
-  ) {
+  public static async findCategoryPostsByCursor(cursor: number, categoryId: number) {
     const categoryIds = _.chain(
       await Promise.all([
         (await Category.findById(categoryId))?.id,
-        (await Category.findByParentId(categoryId)).map(
-          (category) => category.id
-        ),
+        (await Category.findByParentId(categoryId)).map((category) => category.id),
       ])
     )
       .flatten()

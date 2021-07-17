@@ -12,13 +12,9 @@ export const applyErrorHandlers = (rootRouter: Router) => {
 
   const serverError: ErrorRequestHandler = (err, req, res, next) => {
     if (err instanceof ErrorResponse) {
-      return res
-        .status(err.statusCode)
-        .json(Presenters.presentError(err.message));
+      return res.status(err.statusCode).json(Presenters.presentError(err.message));
     } else {
-      return res
-        .status(500)
-        .json(Presenters.presentError("Internal Server Error"));
+      return res.status(500).json(Presenters.presentError("Internal Server Error"));
     }
   };
 

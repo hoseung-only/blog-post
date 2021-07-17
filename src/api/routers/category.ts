@@ -13,15 +13,8 @@ export const applyCategoryRouters = (rootRouter: Router) => {
 
   router.post(
     "/",
-    body("name")
-      .isString()
-      .withMessage("name must be string")
-      .exists()
-      .withMessage("name must be provided"),
-    body("parentId")
-      .isNumeric()
-      .withMessage("parentId must be number")
-      .optional(),
+    body("name").isString().withMessage("name must be string").exists().withMessage("name must be provided"),
+    body("parentId").isNumeric().withMessage("parentId must be number").optional(),
     validateParameters,
     async (req, res, next) => {
       try {
@@ -40,15 +33,8 @@ export const applyCategoryRouters = (rootRouter: Router) => {
   router.put(
     "/:id",
     param("id").isNumeric().withMessage("id must be number"),
-    body("name")
-      .isString()
-      .withMessage("name must be string")
-      .exists()
-      .withMessage("name must be provided"),
-    body("parentId")
-      .isNumeric()
-      .withMessage("parentId must be number")
-      .optional(),
+    body("name").isString().withMessage("name must be string").exists().withMessage("name must be provided"),
+    body("parentId").isNumeric().withMessage("parentId must be number").optional(),
     validateParameters,
     async (req, res, next) => {
       try {
@@ -58,9 +44,7 @@ export const applyCategoryRouters = (rootRouter: Router) => {
 
         const editedCategory = await Category.update({ id, name, parentId });
 
-        return res
-          .status(200)
-          .json(Presenters.presentCategory({ category: editedCategory }));
+        return res.status(200).json(Presenters.presentCategory({ category: editedCategory }));
       } catch (error) {
         return next(error);
       }
@@ -71,9 +55,7 @@ export const applyCategoryRouters = (rootRouter: Router) => {
     try {
       const categories = await Category.findAll();
 
-      return res
-        .status(200)
-        .json(Presenters.presentAllCategories({ categories }));
+      return res.status(200).json(Presenters.presentAllCategories({ categories }));
     } catch (error) {
       return next(error);
     }
@@ -90,12 +72,9 @@ export const applyCategoryRouters = (rootRouter: Router) => {
         const categoryId = Number(req.params.id);
 
         const posts = await Post.findCategoryPostsByCursor(cursor, categoryId);
-        const nextCursor =
-          posts.length === 10 ? posts[posts.length - 1].id + 1 : null;
+        const nextCursor = posts.length === 10 ? posts[posts.length - 1].id + 1 : null;
 
-        return res
-          .status(200)
-          .json(Presenters.presentPostList({ posts, nextCursor }));
+        return res.status(200).json(Presenters.presentPostList({ posts, nextCursor }));
       } catch (error) {
         return next(error);
       }

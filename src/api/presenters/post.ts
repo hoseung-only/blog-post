@@ -3,15 +3,7 @@ import { Post } from "../../database/entities/post";
 import * as Entities from "../entities";
 
 function renderPost(post: Post): Entities.Post {
-  const {
-    id,
-    title,
-    coverImageURL,
-    content,
-    categoryId,
-    createdAt,
-    summary,
-  } = post;
+  const { id, title, coverImageURL, content, categoryId, createdAt, summary } = post;
 
   return {
     id,
@@ -24,10 +16,7 @@ function renderPost(post: Post): Entities.Post {
   };
 }
 
-function renderPostList(
-  posts: Post[],
-  nextCursor: number | null
-): Entities.PostListShow {
+function renderPostList(posts: Post[], nextCursor: number | null): Entities.PostListShow {
   const renderedPosts = posts.map((post) => renderPost(post));
 
   return {
@@ -40,9 +29,6 @@ export function presentPost(input: { post: Post }): Entities.Post {
   return renderPost(input.post);
 }
 
-export function presentPostList(input: {
-  posts: Post[];
-  nextCursor: number | null;
-}): Entities.PostListShow {
+export function presentPostList(input: { posts: Post[]; nextCursor: number | null }): Entities.PostListShow {
   return renderPostList(input.posts, input.nextCursor);
 }

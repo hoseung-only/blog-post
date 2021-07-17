@@ -14,11 +14,7 @@ export const applyPostRouters = (rootRouter: Router) => {
 
   router.get(
     "/",
-    query("count")
-      .isNumeric()
-      .withMessage("count must be number")
-      .exists()
-      .withMessage("count must be provided"),
+    query("count").isNumeric().withMessage("count must be number").exists().withMessage("count must be provided"),
     query("cursor").isNumeric().withMessage("cursor must be number").optional(),
     validateParameters,
     async (req, res, next) => {
@@ -27,12 +23,9 @@ export const applyPostRouters = (rootRouter: Router) => {
         const cursor = req.query.cursor ? Number(req.query.cursor) : 0;
 
         const posts = await Post.findByCursor({ count, cursor });
-        const nextCursor =
-          posts.length === count ? posts[posts.length - 1].id + 1 : null;
+        const nextCursor = posts.length === count ? posts[posts.length - 1].id + 1 : null;
 
-        return res
-          .status(200)
-          .json(Presenters.presentPostList({ posts, nextCursor }));
+        return res.status(200).json(Presenters.presentPostList({ posts, nextCursor }));
       } catch (error) {
         return next(error);
       }
@@ -62,29 +55,11 @@ export const applyPostRouters = (rootRouter: Router) => {
 
   router.post(
     "/",
-    body("title")
-      .isString()
-      .withMessage("title must be string")
-      .exists()
-      .withMessage("title must be provided"),
-    body("coverImageURL")
-      .isString()
-      .withMessage("coverImageURL must be string")
-      .optional(),
-    body("content")
-      .isString()
-      .withMessage("content must be string")
-      .exists()
-      .withMessage("title must be provided"),
-    body("categoryId")
-      .isNumeric()
-      .withMessage("categoryId must be number")
-      .optional(),
-    body("summary")
-      .isString()
-      .withMessage("summary must be string")
-      .exists()
-      .withMessage("summary must be provided"),
+    body("title").isString().withMessage("title must be string").exists().withMessage("title must be provided"),
+    body("coverImageURL").isString().withMessage("coverImageURL must be string").optional(),
+    body("content").isString().withMessage("content must be string").exists().withMessage("title must be provided"),
+    body("categoryId").isNumeric().withMessage("categoryId must be number").optional(),
+    body("summary").isString().withMessage("summary must be string").exists().withMessage("summary must be provided"),
     validateParameters,
     async (req, res, next) => {
       try {
@@ -112,29 +87,11 @@ export const applyPostRouters = (rootRouter: Router) => {
   router.put(
     "/:id",
     param("id").isNumeric().withMessage("postId must be number"),
-    body("title")
-      .isString()
-      .withMessage("title must be string")
-      .exists()
-      .withMessage("title must be provided"),
-    body("coverImageURL")
-      .isString()
-      .withMessage("coverImageURL must be string")
-      .optional(),
-    body("content")
-      .isString()
-      .withMessage("content must be string")
-      .exists()
-      .withMessage("title must be provided"),
-    body("categoryId")
-      .isNumeric()
-      .withMessage("categoryId must be number")
-      .optional(),
-    body("summary")
-      .isString()
-      .withMessage("summary must be string")
-      .exists()
-      .withMessage("summary must be provided"),
+    body("title").isString().withMessage("title must be string").exists().withMessage("title must be provided"),
+    body("coverImageURL").isString().withMessage("coverImageURL must be string").optional(),
+    body("content").isString().withMessage("content must be string").exists().withMessage("title must be provided"),
+    body("categoryId").isNumeric().withMessage("categoryId must be number").optional(),
+    body("summary").isString().withMessage("summary must be string").exists().withMessage("summary must be provided"),
     validateParameters,
     async (req, res, next) => {
       try {

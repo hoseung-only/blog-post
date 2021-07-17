@@ -27,9 +27,7 @@ describe("Category Routers", () => {
 
     context("When user requests", () => {
       before(async () => {
-        const result = await Promise.all(
-          _.times(2, () => Category.create({ name: "parent" }))
-        );
+        const result = await Promise.all(_.times(2, () => Category.create({ name: "parent" })));
         await Promise.all(
           _.times(5, (index) =>
             Category.create({
@@ -52,9 +50,7 @@ describe("Category Routers", () => {
             const { data } = response.body;
 
             expect(data.length).to.be.eq(2);
-            expect(
-              [data[0].children.length, data[1].children.length].sort()
-            ).to.be.deep.eq([2, 3]);
+            expect([data[0].children.length, data[1].children.length].sort()).to.be.deep.eq([2, 3]);
           })
           .catch((error) => {
             throw error;
@@ -128,40 +124,37 @@ describe("Category Routers", () => {
       });
     });
 
-    context(
-      "When user requests with the id of parent category which already has parent",
-      () => {
-        let parentId: number;
+    context("When user requests with the id of parent category which already has parent", () => {
+      let parentId: number;
 
-        before(async () => {
-          const { id } = await Category.create({
-            name: "parent category",
-            parentId: parentCategory.id,
+      before(async () => {
+        const { id } = await Category.create({
+          name: "parent category",
+          parentId: parentCategory.id,
+        });
+
+        parentId = id;
+      });
+
+      after(async () => {
+        await Category.deleteByIds([parentId]);
+      });
+
+      it("should return error response", async () => {
+        return request(app)
+          .post("/categories")
+          .send({ name: "category", parentId })
+          .expect(400)
+          .then((response) => {
+            const { message } = response.body;
+
+            expect(message).to.be.eq("Depth of categories has to be up to 2");
+          })
+          .catch((error) => {
+            throw error;
           });
-
-          parentId = id;
-        });
-
-        after(async () => {
-          await Category.deleteByIds([parentId]);
-        });
-
-        it("should return error response", async () => {
-          return request(app)
-            .post("/categories")
-            .send({ name: "category", parentId })
-            .expect(400)
-            .then((response) => {
-              const { message } = response.body;
-
-              expect(message).to.be.eq("Depth of categories has to be up to 2");
-            })
-            .catch((error) => {
-              throw error;
-            });
-        });
-      }
-    );
+      });
+    });
   });
 
   describe("PUT /:id : update category", () => {
