@@ -127,7 +127,7 @@ export class Post {
   @Column({ type: "varchar", length: 255 })
   title: string;
 
-  @Column({ type: "varchar", length: 500, nullable: true })
+  @Column({ type: "varchar", length: 500, nullable: true, name: "cover_image_url" })
   coverImageURL: string | null;
 
   @Column({ type: "text" })
