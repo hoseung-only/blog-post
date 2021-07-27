@@ -5,7 +5,7 @@ provider:
   runtime: nodejs12.x
   region: ap-northeast-2
   stage: prod
-  environment: ${file(./env/mysql.yml)}
+  environment: ${file(./env/env.yml)}
   lambdaHashingVersion: 20201221
 
 plugins:
