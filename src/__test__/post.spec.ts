@@ -20,6 +20,7 @@ describe("Post Routers", () => {
       const { id } = await Category.create({ name: "category" });
       post = await Post.create({
         title: "title",
+        coverImageURL: "",
         content: "content",
         categoryId: id,
         summary: "summary",
@@ -42,7 +43,7 @@ describe("Post Routers", () => {
             expect(result).to.be.deep.eq({
               id: post.id,
               title: post.title,
-              coverImageURL: null,
+              coverImageURL: "",
               content: post.content,
               summary: "summary",
               categoryId: post.categoryId,
@@ -63,6 +64,7 @@ describe("Post Routers", () => {
         _.times(15, () =>
           Post.create({
             title: "title",
+            coverImageURL: "",
             content: "content",
             categoryId: id,
             summary: "summary",
@@ -129,16 +131,18 @@ describe("Post Routers", () => {
 
       it("should create a new post", async () => {
         const title = "title";
+        const coverImageURL = "url";
         const content = "content";
         const summary = "summary";
 
         return request(app)
           .post("/posts")
-          .send({ title, content, summary, categoryId })
+          .send({ title, coverImageURL, content, summary, categoryId })
           .expect(201)
           .then((response) => {
             expect(response.body).to.be.deep.contains({
               title,
+              coverImageURL,
               content,
               summary,
               categoryId,
@@ -159,6 +163,7 @@ describe("Post Routers", () => {
       before(async () => {
         post = await Post.create({
           title: "asdf",
+          coverImageURL: "",
           content: "asdf",
           summary: "asdf",
         });
@@ -170,6 +175,7 @@ describe("Post Routers", () => {
           .put(`/posts/${post.id}`)
           .send({
             title: "qwer",
+            coverImageURL: "",
             content: "qwer",
             summary: "qwer",
             categoryId: category.id,
@@ -195,6 +201,7 @@ describe("Post Routers", () => {
       const category = await Category.create({ name: "category" });
       const post = await Post.create({
         title: "",
+        coverImageURL: "",
         content: "",
         categoryId: category.id,
         summary: "",
