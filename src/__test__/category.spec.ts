@@ -240,6 +240,7 @@ describe("Category Routers", () => {
         _.times(3, () =>
           Post.create({
             title: "parent",
+            coverImageURL: "",
             content: "content",
             categoryId: parent.id,
             summary: "summary",
@@ -251,6 +252,7 @@ describe("Category Routers", () => {
         _.times(3, () =>
           Post.create({
             title: "child",
+            coverImageURL: "",
             content: "content",
             categoryId: child.id,
             summary: "summary",

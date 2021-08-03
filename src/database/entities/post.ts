@@ -61,7 +61,7 @@ export class Post {
     summary,
   }: {
     title: string;
-    coverImageURL?: string;
+    coverImageURL: string;
     content: string;
     categoryId?: number;
     summary: string;
@@ -71,7 +71,7 @@ export class Post {
     const post = repository.create();
 
     post.title = title;
-    post.coverImageURL = coverImageURL ?? null;
+    post.coverImageURL = coverImageURL;
     post.content = content;
     post.categoryId = categoryId ?? null;
     post.summary = summary;
@@ -89,7 +89,7 @@ export class Post {
   }: {
     id: number;
     title: string;
-    coverImageURL?: string;
+    coverImageURL: string;
     content: string;
     categoryId?: number;
     summary: string;
@@ -101,7 +101,7 @@ export class Post {
     }
 
     post.title = title;
-    post.coverImageURL = coverImageURL ?? null;
+    post.coverImageURL = coverImageURL;
     post.content = content;
     post.categoryId = categoryId ?? null;
     post.summary = summary;
@@ -127,8 +127,8 @@ export class Post {
   @Column({ type: "varchar", length: 255 })
   title: string;
 
-  @Column({ type: "varchar", length: 500, nullable: true, name: "cover_image_url" })
-  coverImageURL: string | null;
+  @Column({ type: "varchar", length: 500, name: "cover_image_url" })
+  coverImageURL: string;
 
   @Column({ type: "text" })
   content: string;
