@@ -36,5 +36,5 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           mkdir env
-          echo -e "${{ secrets.SERVERLESS_ENV }}" > env/env.yml
+          echo "${{ secrets.SERVERLESS_ENV }}" > env/env.yml
           npm run deploy
