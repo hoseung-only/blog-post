@@ -1,15 +1,15 @@
 export interface Category {
-  id: number;
+  id: string;
   name: string;
-  parentId: number | null;
+  parentId: string | null;
 }
 
 export interface AllCategoriesShow {
   data: {
-    id: number;
+    id: string;
     name: string;
     children: {
-      id: number;
+      id: string;
       name: string;
     }[];
   }[];

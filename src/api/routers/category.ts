@@ -14,12 +14,12 @@ export const applyCategoryRouters = (rootRouter: Router) => {
   router.post(
     "/",
     body("name").isString().withMessage("name must be string").exists().withMessage("name must be provided"),
-    body("parentId").isNumeric().withMessage("parentId must be number").optional(),
+    body("parentId").isString().withMessage("parentId must be string").optional(),
     validateParameters,
     async (req, res, next) => {
       try {
         const name = req.body.name as string;
-        const parentId = req.body.parentId as number | undefined;
+        const parentId = req.body.parentId as string | undefined;
 
         const category = await Category.create({ name, parentId });
 
@@ -32,15 +32,15 @@ export const applyCategoryRouters = (rootRouter: Router) => {
 
   router.put(
     "/:id",
-    param("id").isNumeric().withMessage("id must be number"),
+    param("id").isString().withMessage("id must be string"),
     body("name").isString().withMessage("name must be string").exists().withMessage("name must be provided"),
-    body("parentId").isNumeric().withMessage("parentId must be number").optional(),
+    body("parentId").isString().withMessage("parentId must be string").optional(),
     validateParameters,
     async (req, res, next) => {
       try {
-        const id = Number(req.params.id);
+        const id = req.params.id as string;
         const name = req.body.name as string;
-        const parentId = req.body.parentId as number | undefined;
+        const parentId = req.body.parentId as string | undefined;
 
         const editedCategory = await Category.update({ id, name, parentId });
 
@@ -63,13 +63,13 @@ export const applyCategoryRouters = (rootRouter: Router) => {
 
   router.get(
     "/:id/posts",
-    param("id").isNumeric().withMessage("id must be number"),
+    param("id").isString().withMessage("id must be string"),
     query("count").isNumeric().withMessage("count must be number").exists(),
     query("cursor").isNumeric().withMessage("cursor must be number").optional(),
     validateParameters,
     async (req, res, next) => {
       try {
-        const categoryId = Number(req.params.id);
+        const categoryId = req.params.id as string;
         const count = Number(req.query.count);
         const cursor = req.query.cursor ? Number(req.query.cursor) : undefined;
 
@@ -85,11 +85,11 @@ export const applyCategoryRouters = (rootRouter: Router) => {
 
   router.delete(
     "/:id",
-    param("id").isNumeric().withMessage("id must be number"),
+    param("id").isString().withMessage("id must be string"),
     validateParameters,
     async (req, res, next) => {
       try {
-        const id = Number(req.params.id);
+        const id = req.params.id as string;
 
         await Category.deleteByIds([id]);
 

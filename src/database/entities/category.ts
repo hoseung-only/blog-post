@@ -10,7 +10,7 @@ export class Category {
     return (await getConnection()).getRepository(this);
   }
 
-  private static async findParentById(id: number) {
+  private static async findParentById(id: string) {
     const parent = await this.findById(id);
 
     if (parent) {
@@ -24,7 +24,7 @@ export class Category {
     }
   }
 
-  public static async create(attributes: { name: string; parentId?: number }) {
+  public static async create(attributes: { name: string; parentId?: string }) {
     const { name, parentId = null } = attributes;
 
     const category = new this();
@@ -37,7 +37,7 @@ export class Category {
     return (await this.getRepository()).save(category);
   }
 
-  public static async update({ id, name, parentId }: { id: number; name: string; parentId?: number }) {
+  public static async update({ id, name, parentId }: { id: string; name: string; parentId?: string }) {
     const category = await this.findById(id);
 
     if (!category) {
@@ -55,20 +55,20 @@ export class Category {
     return (await this.getRepository()).save(category);
   }
 
-  public static async findById(id: number) {
+  public static async findById(id: string) {
     return (await this.getRepository()).findOne(id);
   }
 
-  public static async findByParentId(id: number) {
+  public static async findByParentId(id: string) {
     return (await this.getRepository()).find({ where: { parentId: id } });
   }
 
-  public static async deleteByIds(ids: number[]) {
+  public static async deleteByIds(ids: string[]) {
     await (await this.getRepository()).delete(ids);
   }
 
   public static async findAll() {
-    return (await this.getRepository()).find({ order: { id: "DESC" } });
+    return (await this.getRepository()).find({ order: { createdAt: "DESC" } });
   }
 
   /**
@@ -84,14 +84,14 @@ export class Category {
   }
 
   @Index()
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @Column({ type: "varchar", length: 255 })
   name: string;
 
   @Column({ name: "parent_id", nullable: true })
-  parentId: number | null;
+  parentId: string | null;
 
   @CreateDateColumn({ type: "datetime", name: "created_at" })
   createdAt: Date;

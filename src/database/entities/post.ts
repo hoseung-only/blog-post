@@ -36,7 +36,7 @@ export class Post {
     count,
     cursor,
   }: {
-    categoryId: number;
+    categoryId: string;
     count: number;
     cursor?: number;
   }) {
@@ -57,7 +57,7 @@ export class Post {
     });
   }
 
-  public static async findById(id: number) {
+  public static async findById(id: string) {
     return (await this.getRepository()).findOne(id);
   }
 
@@ -71,7 +71,7 @@ export class Post {
     title: string;
     coverImageURL: string;
     content: string;
-    categoryId?: number;
+    categoryId?: string;
     summary: string;
   }) {
     const repository = await this.getRepository();
@@ -95,11 +95,11 @@ export class Post {
     categoryId,
     summary,
   }: {
-    id: number;
+    id: string;
     title: string;
     coverImageURL: string;
     content: string;
-    categoryId?: number;
+    categoryId?: string;
     summary: string;
   }) {
     const post = await this.findById(id);
@@ -117,7 +117,7 @@ export class Post {
     return (await this.getRepository()).save(post);
   }
 
-  public static async deleteByIds(ids: number[]) {
+  public static async deleteByIds(ids: string[]) {
     await (await this.getRepository()).delete(ids);
   }
 
@@ -129,8 +129,8 @@ export class Post {
   }
 
   @Index()
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @Column({ type: "varchar", length: 255 })
   title: string;
@@ -148,7 +148,7 @@ export class Post {
   createdAt: Date;
 
   @Column({ name: "category_id", nullable: true })
-  categoryId: number | null;
+  categoryId: string | null;
 
   @ManyToOne(() => Category, { onDelete: "CASCADE" })
   @JoinColumn({ name: "category_id" })

@@ -34,11 +34,11 @@ export const applyPostRouters = (rootRouter: Router) => {
 
   router.get(
     "/:id",
-    param("id").isNumeric().withMessage("id must be number"),
+    param("id").isString().withMessage("id must be string"),
     validateParameters,
     async (req, res, next) => {
       try {
-        const id = Number(req.params.id);
+        const id = req.params.id as string;
 
         const post = await Post.findById(id);
 
@@ -58,7 +58,7 @@ export const applyPostRouters = (rootRouter: Router) => {
     body("title").isString().withMessage("title must be string").exists().withMessage("title must be provided"),
     body("coverImageURL").isString().withMessage("coverImageURL must be string").exists(),
     body("content").isString().withMessage("content must be string").exists().withMessage("title must be provided"),
-    body("categoryId").isNumeric().withMessage("categoryId must be number").optional(),
+    body("categoryId").isString().withMessage("categoryId must be string").optional(),
     body("summary").isString().withMessage("summary must be string").exists().withMessage("summary must be provided"),
     validateParameters,
     async (req, res, next) => {
@@ -66,7 +66,7 @@ export const applyPostRouters = (rootRouter: Router) => {
         const title = req.body.title as string;
         const coverImageURL = req.body.coverImageURL as string;
         const content = req.body.content as string;
-        const categoryId = req.body.categoryId as number | undefined;
+        const categoryId = req.body.categoryId as string | undefined;
         const summary = req.body.summary as string;
 
         const post = await Post.create({
@@ -86,20 +86,20 @@ export const applyPostRouters = (rootRouter: Router) => {
 
   router.put(
     "/:id",
-    param("id").isNumeric().withMessage("postId must be number"),
+    param("id").isString().withMessage("id must be string"),
     body("title").isString().withMessage("title must be string").exists().withMessage("title must be provided"),
     body("coverImageURL").isString().withMessage("coverImageURL must be string").exists(),
     body("content").isString().withMessage("content must be string").exists().withMessage("title must be provided"),
-    body("categoryId").isNumeric().withMessage("categoryId must be number").optional(),
+    body("categoryId").isString().withMessage("categoryId must be string").optional(),
     body("summary").isString().withMessage("summary must be string").exists().withMessage("summary must be provided"),
     validateParameters,
     async (req, res, next) => {
       try {
-        const id = Number(req.params.id);
+        const id = req.params.id as string;
         const title = req.body.title as string;
         const coverImageURL = req.body.coverImageURL as string;
         const content = req.body.content as string;
-        const categoryId = req.body.categoryId as number | undefined;
+        const categoryId = req.body.categoryId as string | undefined;
         const summary = req.body.summary as string;
 
         const post = await Post.update({
@@ -120,11 +120,11 @@ export const applyPostRouters = (rootRouter: Router) => {
 
   router.delete(
     "/:id",
-    param("id").isNumeric().withMessage("id must be number"),
+    param("id").isString().withMessage("id must be string"),
     validateParameters,
     async (req, res, next) => {
       try {
-        const id = Number(req.params.id);
+        const id = req.params.id as string;
 
         await Post.deleteByIds([id]);
 

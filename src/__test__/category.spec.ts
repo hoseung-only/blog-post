@@ -111,21 +111,13 @@ describe("Category Routers", () => {
       it("should return error response", async () => {
         return request(app)
           .post("/categories")
-          .send({ name: "category", parentId: 12345 })
-          .expect(400)
-          .then((response) => {
-            const { message } = response.body;
-
-            expect(message).to.be.eq("Provided parent category does not exist");
-          })
-          .catch((error) => {
-            throw error;
-          });
+          .send({ name: "category", parentId: "fasdfasdfsa" })
+          .expect(400);
       });
     });
 
     context("When user requests with the id of parent category which already has parent", () => {
-      let parentId: number;
+      let parentId: string;
 
       before(async () => {
         const { id } = await Category.create({
@@ -206,7 +198,7 @@ describe("Category Routers", () => {
   });
 
   describe("DELETE /:id : delete category by id", () => {
-    let categoryId: number;
+    let categoryId: string;
 
     before(async () => {
       const category = await Category.create({ name: "category" });
