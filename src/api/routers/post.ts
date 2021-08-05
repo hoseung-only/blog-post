@@ -23,7 +23,7 @@ export const applyPostRouters = (rootRouter: Router) => {
         const cursor = req.query.cursor ? Number(req.query.cursor) : 0;
 
         const posts = await Post.findByCursor({ count, cursor });
-        const nextCursor = posts.length === count ? posts[posts.length - 1].id + 1 : null;
+        const nextCursor = posts.length === count ? posts[posts.length - 1].createdAt.valueOf() : null;
 
         return res.status(200).json(Presenters.presentPostList({ posts, nextCursor }));
       } catch (error) {

@@ -64,15 +64,17 @@ export const applyCategoryRouters = (rootRouter: Router) => {
   router.get(
     "/:id/posts",
     param("id").isNumeric().withMessage("id must be number"),
+    query("count").isNumeric().withMessage("count must be number").exists(),
     query("cursor").isNumeric().withMessage("cursor must be number").optional(),
     validateParameters,
     async (req, res, next) => {
       try {
-        const cursor = req.query.cursor ? Number(req.query.cursor) : 0;
         const categoryId = Number(req.params.id);
+        const count = Number(req.query.count);
+        const cursor = req.query.cursor ? Number(req.query.cursor) : undefined;
 
-        const posts = await Post.findCategoryPostsByCursor(cursor, categoryId);
-        const nextCursor = posts.length === 10 ? posts[posts.length - 1].id + 1 : null;
+        const posts = await Post.findCategoryPostsByCursor({ categoryId, count, cursor });
+        const nextCursor = posts.length === count ? posts[posts.length - 1].createdAt.valueOf() : null;
 
         return res.status(200).json(Presenters.presentPostList({ posts, nextCursor }));
       } catch (error) {

@@ -265,6 +265,7 @@ describe("Category Routers", () => {
       it("should return posts including posts of child categories", async () => {
         return request(app)
           .get(`/categories/${parent.id}/posts`)
+          .query({ count: 10 })
           .expect(200)
           .then((response) => {
             expect(response.body.data.length).to.be.eq(6);
@@ -280,6 +281,7 @@ describe("Category Routers", () => {
       it("should return posts of child category", async () => {
         return request(app)
           .get(`/categories/${child.id}/posts`)
+          .query({ count: 10 })
           .expect(200)
           .then((response) => {
             expect(response.body.data.length).to.be.eq(3);

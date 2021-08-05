@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Index } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn, Index } from "typeorm";
 
 import { getConnection } from "../getConnection";
 
@@ -68,7 +68,7 @@ export class Category {
   }
 
   public static async findAll() {
-    return (await this.getRepository()).find();
+    return (await this.getRepository()).find({ order: { id: "DESC" } });
   }
 
   /**
@@ -92,6 +92,9 @@ export class Category {
 
   @Column({ name: "parent_id", nullable: true })
   parentId: number | null;
+
+  @CreateDateColumn({ type: "datetime", name: "created_at" })
+  createdAt: Date;
 
   @ManyToOne(() => Category, { onDelete: "CASCADE" })
   @JoinColumn({ name: "parent_id" })

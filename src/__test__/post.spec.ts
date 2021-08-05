@@ -58,9 +58,10 @@ describe("Post Routers", () => {
   });
 
   describe("GET / : get post list", () => {
+    let posts: Post[];
     before(async () => {
       const { id } = await Category.create({ name: "category" });
-      await Promise.all(
+      posts = await Promise.all(
         _.times(15, () =>
           Post.create({
             title: "title",
@@ -79,19 +80,16 @@ describe("Post Routers", () => {
     });
 
     context("When user requests with specific cursor", () => {
-      it("should return post list starting with id 10", async () => {
+      it("should return posts created before post 10", async () => {
         return request(app)
           .get("/posts")
-          .query({ count: 10, cursor: 10 })
+          .query({ count: 15, cursor: posts[10].createdAt.valueOf() })
           .expect(200)
           .then((response) => {
             const { data, nextCursor } = response.body;
 
-            // list length should be 6 (id 10 ~ 15)
-            expect(data.length).to.be.eq(6);
-            // id of first post should be 10
+            expect(data.length).to.be.eq(10);
             expect(data[0].id).to.be.eq(10);
-            // next cursor should be null (because there are no more posts)
             expect(nextCursor).to.be.null;
           })
           .catch((error) => {
@@ -110,8 +108,8 @@ describe("Post Routers", () => {
             const { data, nextCursor } = response.body;
 
             expect(data.length).to.be.eq(5);
-            expect(data[0].id).to.be.eq(1);
-            expect(nextCursor).to.be.eq(6);
+            expect(data[0].id).to.be.eq(15);
+            expect(nextCursor).to.be.eq(data[4].createdAt);
           })
           .catch((error) => {
             throw error;
