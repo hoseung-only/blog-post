@@ -7,7 +7,7 @@ import {
   ManyToOne,
   JoinColumn,
   Index,
-  MoreThanOrEqual,
+  LessThan,
   In,
 } from "typeorm";
 
@@ -23,15 +23,23 @@ export class Post {
     return (await getConnection()).getRepository(this);
   }
 
-  public static async findByCursor({ count, cursor }: { count: number; cursor: number }) {
+  public static async findByCursor({ count, cursor }: { count: number; cursor?: number }) {
     return (await this.getRepository()).find({
-      where: { id: MoreThanOrEqual(cursor) },
-      order: { id: "ASC" },
+      where: { createdAt: LessThan(cursor ? new Date(cursor) : new Date()) },
+      order: { createdAt: "DESC" },
       take: count,
     });
   }
 
-  public static async findCategoryPostsByCursor(cursor: number, categoryId: number) {
+  public static async findCategoryPostsByCursor({
+    categoryId,
+    count,
+    cursor,
+  }: {
+    categoryId: number;
+    count: number;
+    cursor?: number;
+  }) {
     const categoryIds = _.chain(
       await Promise.all([
         (await Category.findById(categoryId))?.id,
@@ -43,9 +51,9 @@ export class Post {
       .value();
 
     return (await this.getRepository()).find({
-      where: { id: MoreThanOrEqual(cursor), categoryId: In(categoryIds) },
-      order: { id: "ASC" },
-      take: 10,
+      where: { createdAt: LessThan(cursor ? new Date(cursor) : new Date()), categoryId: In(categoryIds) },
+      order: { createdAt: "DESC" },
+      take: count,
     });
   }
 
