@@ -89,7 +89,7 @@ describe("Post Routers", () => {
             const { data, nextCursor } = response.body;
 
             expect(data.length).to.be.eq(10);
-            expect(data[0].id).to.be.eq(10);
+            expect(data[0].id).to.be.eq(posts[9].id);
             expect(nextCursor).to.be.null;
           })
           .catch((error) => {
@@ -99,7 +99,7 @@ describe("Post Routers", () => {
     });
 
     context("When user requests without any specific cursor", () => {
-      it("should return post list starting with id 1", async () => {
+      it("should return posts", async () => {
         return request(app)
           .get("/posts")
           .query({ count: 5 })
@@ -108,7 +108,7 @@ describe("Post Routers", () => {
             const { data, nextCursor } = response.body;
 
             expect(data.length).to.be.eq(5);
-            expect(data[0].id).to.be.eq(15);
+            expect(data[0].id).to.be.eq(posts[14].id);
             expect(nextCursor).to.be.eq(data[4].createdAt);
           })
           .catch((error) => {
@@ -120,7 +120,7 @@ describe("Post Routers", () => {
 
   describe("POST / : create post", () => {
     context("When user has created a category", () => {
-      let categoryId: number;
+      let categoryId: string;
 
       before(async () => {
         const category = await Category.create({ name: "category" });
@@ -193,7 +193,7 @@ describe("Post Routers", () => {
   });
 
   describe("DELETE /:id : delete post by id", () => {
-    let postId: number;
+    let postId: string;
 
     before(async () => {
       const category = await Category.create({ name: "category" });

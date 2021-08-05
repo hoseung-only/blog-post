@@ -1,11 +1,11 @@
 import { PaginatedEntity } from "./paginated";
 
 export interface Post {
-  id: number;
+  id: string;
   title: string;
   coverImageURL: string;
   content: string;
-  categoryId: number | null;
+  categoryId: string | null;
   createdAt: number;
   summary: string;
 }
