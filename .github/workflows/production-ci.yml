@@ -8,7 +8,6 @@ on:
 jobs:
   job:
     runs-on: ubuntu-latest
-    container: node:12
     services:
       mysql:
         image: mysql:5.7
@@ -17,6 +16,8 @@ jobs:
           MYSQL_DATABASE: blog
           MYSQL_USER: hsjang
           MYSQL_PASSWORD: password
+        ports:
+          - 3306:3306
     steps:
       - uses: actions/checkout@v2
       - name: Install NPM Dependencies
@@ -26,8 +27,6 @@ jobs:
           npm ci
 
       - name: Test
-        env:
-          MYSQL_CONNECTION_URL: mysql://hsjang:password@mysql:3306/blog
         run: npm run test
 
       - name: Deploy
