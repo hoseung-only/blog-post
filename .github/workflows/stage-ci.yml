@@ -9,7 +9,6 @@ on:
 jobs:
   job:
     runs-on: ubuntu-latest
-    container: node:12
     services:
       mysql:
         image: mysql:5.7
