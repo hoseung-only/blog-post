@@ -28,6 +28,4 @@ jobs:
           npm ci
 
       - name: Test
-        env:
-          MYSQL_CONNECTION_URL: mysql://hsjang:password@127.0.0.1:3306/blog
         run: npm run test
