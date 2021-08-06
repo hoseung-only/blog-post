@@ -16,6 +16,8 @@ jobs:
           MYSQL_DATABASE: blog
           MYSQL_USER: hsjang
           MYSQL_PASSWORD: password
+        ports:
+          - 3306:3306
     steps:
       - uses: actions/checkout@v2
       - name: Install NPM Dependencies
