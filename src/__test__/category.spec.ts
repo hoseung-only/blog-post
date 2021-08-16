@@ -109,10 +109,7 @@ describe("Category Routers", () => {
 
     context("When user requests with the invalid id of parent category", () => {
       it("should return error response", async () => {
-        return request(app)
-          .post("/categories")
-          .send({ name: "category", parentId: "fasdfasdfsa" })
-          .expect(400);
+        return request(app).post("/categories").send({ name: "category", parentId: "fasdfasdfsa" }).expect(400);
       });
     });
 
