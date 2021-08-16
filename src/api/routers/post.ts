@@ -53,6 +53,23 @@ export const applyPostRouters = (rootRouter: Router) => {
     }
   );
 
+  router.patch(
+    "/:id/view_count",
+    param("id").isString().withMessage("id must be string"),
+    validateParameters,
+    async (req, res, next) => {
+      try {
+        const id = req.params.id as string;
+
+        await Post.increaseViewCount(id);
+
+        return res.status(200).json(Presenters.presentSuccess(true));
+      } catch(error) {
+        return next(error);
+      }
+    },
+  );
+
   router.post(
     "/",
     body("title").isString().withMessage("title must be string").exists().withMessage("title must be provided"),
