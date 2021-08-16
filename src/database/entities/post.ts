@@ -79,6 +79,7 @@ export class Post {
     const post = repository.create();
 
     post.title = title;
+    post.viewCount = 0;
     post.coverImageURL = coverImageURL;
     post.content = content;
     post.categoryId = categoryId ?? null;
@@ -105,7 +106,7 @@ export class Post {
     const post = await this.findById(id);
 
     if (!post) {
-      throw new ErrorResponse(404, "Post does not exist");
+      throw new ErrorResponse(422, "Post does not exist");
     }
 
     post.title = title;
@@ -128,12 +129,27 @@ export class Post {
     await (await this.getRepository()).clear();
   }
 
+  public static async increaseViewCount(id: string) {
+    const post = await this.findById(id);
+
+    if (!post) {
+      throw new ErrorResponse(422, "Post does not exist");
+    }
+
+    post.viewCount = post.viewCount + 1;
+
+    return (await this.getRepository()).save(post);
+  }
+
   @Index()
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column({ type: "varchar", length: 255 })
   title: string;
+
+  @Column({ type: "integer", name: "view_count" })
+  viewCount: number;
 
   @Column({ type: "varchar", length: 500, name: "cover_image_url" })
   coverImageURL: string;

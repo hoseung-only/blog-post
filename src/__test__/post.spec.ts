@@ -208,12 +208,44 @@ describe("Post Routers", () => {
     });
 
     context("When user requests to delete specific post", () => {
-      it("should delete posts by given ids and return success", async () => {
+      it("should delete posts by given id and return success", async () => {
         return request(app)
           .delete(`/posts/${postId}`)
           .expect(200)
           .then(async (response) => {
             expect(response.body.success).to.be.true;
+          })
+          .catch((error) => {
+            throw error;
+          });
+      });
+    });
+  });
+
+  describe("PATCH /:id/view_count : increase view count of given post", () => {
+    let postId: string;
+
+    before(async () => {
+      const category = await Category.create({ name: "category" });
+      const post = await Post.create({
+        title: "",
+        coverImageURL: "",
+        content: "",
+        categoryId: category.id,
+        summary: "",
+      });
+      postId = post.id;
+    });
+
+    context("When user viewed post", () => {
+      it("should increase view count of that post", async () => {
+        return request(app)
+          .patch(`/posts/${postId}/view_count`)
+          .expect(200)
+          .then(async (response) => {
+            const updatedPost = await Post.findById(postId);
+            expect(response.body.success).to.be.true;
+            expect(updatedPost!.viewCount).to.be.eq(1);
           })
           .catch((error) => {
             throw error;
