@@ -43,6 +43,7 @@ describe("Post Routers", () => {
             expect(result).to.be.deep.eq({
               id: post.id,
               title: post.title,
+              viewCount: 0,
               coverImageURL: "",
               content: post.content,
               summary: "summary",
