@@ -8,6 +8,9 @@ on:
 jobs:
   job:
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     services:
       mysql:
         image: mysql:5.7
@@ -34,9 +37,6 @@ jobs:
         run: npm run test
 
       - name: Deploy
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           mkdir env
           echo "${{ secrets.SERVERLESS_ENV }}" > env/env.yml
