@@ -63,7 +63,7 @@ export const applyPostRouters = (rootRouter: Router) => {
         const postId = req.params.id as string;
         const ip = req.ips[0];
 
-        if (await postViewedIP.find({ ip, postId })) {
+        if (!ip || await postViewedIP.find({ ip, postId })) {
           return res.status(200).json(Presenters.presentSuccess(false));
         }
 
