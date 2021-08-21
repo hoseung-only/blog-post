@@ -68,7 +68,7 @@ export const applyPostRouters = (rootRouter: Router) => {
         }
 
         await Post.increaseViewCount(postId);
-        await postViewedIP.create({ ip, postId, expiredAt: new Date(Date.now() + 86400000).valueOf() });
+        await postViewedIP.create({ ip, postId, expiredAt: Math.floor(Date.now() / 1000) + 86400, });
 
         return res.status(200).json(Presenters.presentSuccess(true));
       } catch (error) {
