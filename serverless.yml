@@ -7,6 +7,13 @@ provider:
   stage: prod
   environment: ${file(./env/env.yml)}
   lambdaHashingVersion: 20201221
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "dynamodb:*"
+          Resource: "*"
 
 plugins:
   - serverless-plugin-typescript
