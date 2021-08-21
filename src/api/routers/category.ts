@@ -3,8 +3,8 @@ import { body, param, query } from "express-validator";
 
 import { validateParameters } from "../middlewares/validateParameters";
 
-import { Category } from "../../database/entities/category";
-import { Post } from "../../database/entities/post";
+import { Category } from "../../database/mysql/category";
+import { Post } from "../../database/mysql/post";
 
 import * as Presenters from "../presenters";
 

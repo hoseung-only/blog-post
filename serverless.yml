@@ -15,3 +15,26 @@ functions:
   api:
     handler: src/index.handler
     timeout: 10
+
+resources:
+  Resources:
+    Table:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: post_viewed_ip
+        KeySchema:
+          - AttributeName: ip
+            KeyType: HASH
+          - AttributeName: postId
+            KeyType: RANGE
+        AttributeDefinitions:
+          - AttributeName: ip
+            AttributeType: S
+          - AttributeName: postId
+            AttributeType: S
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+        TimeToLiveSpecification:
+          AttributeName: expiredAt
+          Enabled: true

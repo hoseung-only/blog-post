@@ -5,7 +5,8 @@ import { ErrorResponse } from "../../utils/error";
 
 import { validateParameters } from "../middlewares/validateParameters";
 
-import { Post } from "../../database/entities/post";
+import { Post } from "../../database/mysql/post";
+import { postViewedIP } from "../../database/dynamo/postViewedIP";
 
 import * as Presenters from "../presenters";
 
@@ -59,15 +60,21 @@ export const applyPostRouters = (rootRouter: Router) => {
     validateParameters,
     async (req, res, next) => {
       try {
-        const id = req.params.id as string;
+        const postId = req.params.id as string;
+        const ip = req.ips[0];
 
-        await Post.increaseViewCount(id);
+        if (await postViewedIP.find({ ip, postId })) {
+          return res.status(200).json(Presenters.presentSuccess(false));
+        }
+
+        await Post.increaseViewCount(postId);
+        await postViewedIP.create({ ip, postId, expiredAt: new Date(Date.now() + 86400000).valueOf() });
 
         return res.status(200).json(Presenters.presentSuccess(true));
-      } catch(error) {
+      } catch (error) {
         return next(error);
       }
-    },
+    }
   );
 
   router.post(

@@ -8,6 +8,9 @@ on:
 jobs:
   job:
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     services:
       mysql:
         image: mysql:5.7
@@ -18,6 +21,10 @@ jobs:
           MYSQL_PASSWORD: password
         ports:
           - 3306:3306
+      dynamodb:
+        image: amazon/dynamodb-local
+        ports:
+          - 8000:8000
     steps:
       - uses: actions/checkout@v2
       - name: Install NPM Dependencies
@@ -30,9 +37,6 @@ jobs:
         run: npm run test
 
       - name: Deploy
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           mkdir env
           echo "${{ secrets.SERVERLESS_ENV }}" > env/env.yml

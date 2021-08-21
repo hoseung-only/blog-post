@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn, Index } from "typeorm";
 
-import { getConnection } from "../getConnection";
+import { getConnection } from "./getConnection";
 
 import { ErrorResponse } from "../../utils/error";
 

@@ -1,8 +1,8 @@
 import "reflect-metadata";
 import { Connection, createConnection } from "typeorm";
 
-import { Post } from "./entities/post";
-import { Category } from "./entities/category";
+import { Post } from "./post";
+import { Category } from "./category";
 
 let connection: Connection | undefined;
 

@@ -4,8 +4,8 @@ import { expect } from "chai";
 
 import { app } from "../app";
 
-import { Post } from "../database/entities/post";
-import { Category } from "../database/entities/category";
+import { Post } from "../database/mysql/post";
+import { Category } from "../database/mysql/category";
 
 describe("Post Routers", () => {
   after(async () => {
@@ -242,10 +242,28 @@ describe("Post Routers", () => {
       it("should increase view count of that post", async () => {
         return request(app)
           .patch(`/posts/${postId}/view_count`)
+          .set("X-Forwarded-For", "123.123.123.123, 111.222.333.444")
           .expect(200)
           .then(async (response) => {
             const updatedPost = await Post.findById(postId);
             expect(response.body.success).to.be.true;
+            expect(updatedPost!.viewCount).to.be.eq(1);
+          })
+          .catch((error) => {
+            throw error;
+          });
+      });
+    });
+
+    context("When same user viewed post within 24 hours", () => {
+      it("should keep view count of that post", async () => {
+        return request(app)
+          .patch(`/posts/${postId}/view_count`)
+          .set("X-Forwarded-For", "123.123.123.123, 111.222.333.444")
+          .expect(200)
+          .then(async (response) => {
+            const updatedPost = await Post.findById(postId);
+            expect(response.body.success).to.be.false;
             expect(updatedPost!.viewCount).to.be.eq(1);
           })
           .catch((error) => {
