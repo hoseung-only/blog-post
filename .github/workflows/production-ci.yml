@@ -18,6 +18,10 @@ jobs:
           MYSQL_PASSWORD: password
         ports:
           - 3306:3306
+      dynamodb:
+        image: amazon/dynamodb-local
+        ports:
+          - 8000:8000
     steps:
       - uses: actions/checkout@v2
       - name: Install NPM Dependencies
