@@ -4,8 +4,8 @@ import { expect } from "chai";
 
 import { app } from "../app";
 
-import { Category } from "../database/entities/category";
-import { Post } from "../database/entities/post";
+import { Category } from "../database/mysql/category";
+import { Post } from "../database/mysql/post";
 
 describe("Category Routers", () => {
   describe("GET / : get all categories", () => {

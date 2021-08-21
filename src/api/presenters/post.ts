@@ -1,4 +1,4 @@
-import { Post } from "../../database/entities/post";
+import { Post } from "../../database/mysql/post";
 
 import * as Entities from "../entities";
 

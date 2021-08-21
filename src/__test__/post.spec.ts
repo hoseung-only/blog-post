@@ -4,8 +4,8 @@ import { expect } from "chai";
 
 import { app } from "../app";
 
-import { Post } from "../database/entities/post";
-import { Category } from "../database/entities/category";
+import { Post } from "../database/mysql/post";
+import { Category } from "../database/mysql/category";
 
 describe("Post Routers", () => {
   after(async () => {

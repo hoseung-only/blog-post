@@ -1,6 +1,6 @@
 import * as _ from "lodash";
 
-import { Category } from "../../database/entities/category";
+import { Category } from "../../database/mysql/category";
 
 import * as Entities from "../entities";
 

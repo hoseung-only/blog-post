@@ -5,7 +5,7 @@ import { ErrorResponse } from "../../utils/error";
 
 import { validateParameters } from "../middlewares/validateParameters";
 
-import { Post } from "../../database/entities/post";
+import { Post } from "../../database/mysql/post";
 
 import * as Presenters from "../presenters";
 

@@ -13,7 +13,7 @@ import {
 
 import { Category } from "./category";
 
-import { getConnection } from "../getConnection";
+import { getConnection } from "./getConnection";
 
 import { ErrorResponse } from "../../utils/error";
 
