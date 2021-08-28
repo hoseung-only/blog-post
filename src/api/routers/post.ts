@@ -63,12 +63,12 @@ export const applyPostRouters = (rootRouter: Router) => {
         const postId = req.params.id as string;
         const ip = req.ips[0];
 
-        if (!ip || await postViewedIP.find({ ip, postId })) {
+        if (!ip || (await postViewedIP.find({ ip, postId }))) {
           return res.status(200).json(Presenters.presentSuccess(false));
         }
 
         await Post.increaseViewCount(postId);
-        await postViewedIP.create({ ip, postId, expiredAt: Math.floor(Date.now() / 1000) + 86400, });
+        await postViewedIP.create({ ip, postId, expiredAt: Math.floor(Date.now() / 1000) + 86400 });
 
         return res.status(200).json(Presenters.presentSuccess(true));
       } catch (error) {
