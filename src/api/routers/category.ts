@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { body, param, query } from "express-validator";
 
+import { ErrorResponse } from "../../utils/error";
+
 import { validateParameters } from "../middlewares/validateParameters";
 
 import { Category } from "../../database/mysql/category";
@@ -60,6 +62,27 @@ export const applyCategoryRouters = (rootRouter: Router) => {
       return next(error);
     }
   });
+
+  router.get(
+    "/:id",
+    param("id").isString().withMessage("id must be string"),
+    validateParameters,
+    async (req, res, next) => {
+      try {
+        const id = req.params.id as string;
+
+        const category = await Category.findById(id);
+
+        if (!category) {
+          throw new ErrorResponse(404, "category does not exist");
+        }
+
+        return res.status(200).json(Presenters.presentCategory({ category }));
+      } catch (error) {
+        return next(error);
+      }
+    }
+  );
 
   router.get(
     "/:id/posts",
