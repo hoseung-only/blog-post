@@ -282,4 +282,43 @@ describe("Category Routers", () => {
       });
     });
   });
+
+  describe("POST / : create category", () => {
+    let category: Category;
+
+    before(async () => {
+      category = await Category.create({ name: "category" });
+    });
+
+    after(async () => {
+      await Category.dropTable();
+    });
+
+    context("When user requests specific category with id", () => {
+      it("should return that category", async () => {
+        return request(app)
+          .get(`/categories/${category.id}`)
+          .expect(200)
+          .then((response) => {
+            const result = response.body;
+
+            expect(result.id).to.be.eq(category.id);
+          })
+          .catch((error) => {
+            throw error;
+          });
+      });
+    });
+
+    context("When user requests non-existent category", () => {
+      it("should throw 404", async () => {
+        return request(app)
+          .get(`/categories/asdf`)
+          .expect(404)
+          .catch((error) => {
+            throw error;
+          });
+      });
+    });
+  });
 });
