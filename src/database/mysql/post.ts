@@ -133,7 +133,7 @@ export class Post {
     const post = await this.findById(id);
 
     if (!post) {
-      throw new ErrorResponse(422, "Post does not exist");
+      throw new ErrorResponse(404, "Post does not exist");
     }
 
     post.viewCount = post.viewCount + 1;
