@@ -1,10 +1,10 @@
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 
-import { postViewedIP } from "../postViewedIP";
+import { postViewedUser } from "../postViewedUser";
 
 const client = new DynamoDB({ region: "ap-northeast-2", endpoint: process.env.DYNAMODB_ENDPOINT });
 
-const tables = [postViewedIP];
+const tables = [postViewedUser];
 
 before(async () => {
   for (const table of tables) {

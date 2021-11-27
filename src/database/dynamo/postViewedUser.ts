@@ -1,21 +1,21 @@
 import { Table } from "./base";
 
 interface Properties {
-  ip: string;
+  userId: string;
   postId: string;
   expiredAt: number;
 }
 
-class PostViewedIP extends Table {
+class PostViewedUser extends Table {
   constructor() {
     super({
-      TableName: "post_viewed_ip",
+      TableName: "post_viewed_user",
       KeySchema: [
-        { AttributeName: "ip", KeyType: "HASH" },
+        { AttributeName: "userId", KeyType: "HASH" },
         { AttributeName: "postId", KeyType: "RANGE" },
       ],
       AttributeDefinitions: [
-        { AttributeName: "ip", AttributeType: "S" },
+        { AttributeName: "userId", AttributeType: "S" },
         { AttributeName: "postId", AttributeType: "S" },
       ],
     });
@@ -34,4 +34,4 @@ class PostViewedIP extends Table {
   }
 }
 
-export const postViewedIP = new PostViewedIP();
+export const postViewedUser = new PostViewedUser();
