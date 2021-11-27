@@ -9,7 +9,7 @@ interface Properties {
 class PostViewedUser extends Table {
   constructor() {
     super({
-      TableName: "post_viewed_user",
+      TableName: "post-viewed-user",
       KeySchema: [
         { AttributeName: "userId", KeyType: "HASH" },
         { AttributeName: "postId", KeyType: "RANGE" },
