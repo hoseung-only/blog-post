@@ -6,6 +6,7 @@ import { app } from "../app";
 
 import { Post } from "../database/mysql/post";
 import { Category } from "../database/mysql/category";
+import { postViewedUser } from "../database/dynamo/postViewedUser";
 
 describe("Post Routers", () => {
   after(async () => {
@@ -225,6 +226,7 @@ describe("Post Routers", () => {
 
   describe("PATCH /:id/view_count : increase view count of given post", () => {
     let postId: string;
+    const userId = "asdf";
 
     before(async () => {
       const category = await Category.create({ name: "category" });
@@ -239,10 +241,15 @@ describe("Post Routers", () => {
     });
 
     context("When user viewed post", () => {
+      it("should not find any row from post_viewed_user", async () => {
+        const user = await postViewedUser.find({ postId, userId });
+        expect(!!user).to.be.false;
+      });
+
       it("should increase view count of that post", async () => {
         return request(app)
           .patch(`/posts/${postId}/view_count`)
-          .set("X-Forwarded-For", "123.123.123.123, 111.222.333.444")
+          .send({ userId })
           .expect(200)
           .then(async (response) => {
             const updatedPost = await Post.findById(postId);
@@ -256,10 +263,15 @@ describe("Post Routers", () => {
     });
 
     context("When same user viewed post within 24 hours", () => {
+      it("should find row from post_viewed_user", async () => {
+        const user = await postViewedUser.find({ postId, userId });
+        expect(!!user).to.be.true;
+      });
+
       it("should keep view count of that post", async () => {
         return request(app)
           .patch(`/posts/${postId}/view_count`)
-          .set("X-Forwarded-For", "123.123.123.123, 111.222.333.444")
+          .send({ userId })
           .expect(200)
           .then(async (response) => {
             const updatedPost = await Post.findById(postId);
