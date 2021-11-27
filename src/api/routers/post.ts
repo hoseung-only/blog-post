@@ -6,7 +6,7 @@ import { ErrorResponse } from "../../utils/error";
 import { validateParameters } from "../middlewares/validateParameters";
 
 import { Post } from "../../database/mysql/post";
-import { postViewedIP } from "../../database/dynamo/postViewedIP";
+import { postViewedUser } from "../../database/dynamo/postViewedUser";
 
 import * as Presenters from "../presenters";
 
@@ -57,18 +57,19 @@ export const applyPostRouters = (rootRouter: Router) => {
   router.patch(
     "/:id/view_count",
     param("id").isString().withMessage("id must be string"),
+    body("userId").isString().withMessage("userId must be string"),
     validateParameters,
     async (req, res, next) => {
       try {
         const postId = req.params.id as string;
-        const ip = req.ips[0];
+        const userId = req.body.userId as string;
 
-        if (!ip || (await postViewedIP.find({ ip, postId }))) {
+        if (!userId || (await postViewedUser.find({ userId, postId }))) {
           return res.status(200).json(Presenters.presentSuccess(false));
         }
 
         await Post.increaseViewCount(postId);
-        await postViewedIP.create({ ip, postId, expiredAt: Math.floor(Date.now() / 1000) + 86400 });
+        await postViewedUser.create({ userId, postId, expiredAt: Math.floor(Date.now() / 1000) + 86400 });
 
         return res.status(200).json(Presenters.presentSuccess(true));
       } catch (error) {
