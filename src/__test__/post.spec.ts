@@ -248,8 +248,7 @@ describe("Post Routers", () => {
 
       it("should increase view count of that post", async () => {
         return request(app)
-          .patch(`/posts/${postId}/view_count`)
-          .send({ userId })
+          .patch(`/posts/${postId}/view_count?userId=${userId}`)
           .expect(200)
           .then(async (response) => {
             const updatedPost = await Post.findById(postId);
@@ -270,7 +269,7 @@ describe("Post Routers", () => {
 
       it("should keep view count of that post", async () => {
         return request(app)
-          .patch(`/posts/${postId}/view_count`)
+          .patch(`/posts/${postId}/view_count?userId=${userId}`)
           .send({ userId })
           .expect(200)
           .then(async (response) => {

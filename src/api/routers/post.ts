@@ -57,12 +57,12 @@ export const applyPostRouters = (rootRouter: Router) => {
   router.patch(
     "/:id/view_count",
     param("id").isString().withMessage("id must be string"),
-    body("userId").isString().withMessage("userId must be string"),
+    query("userId").isString().withMessage("userId must be string"),
     validateParameters,
     async (req, res, next) => {
       try {
         const postId = req.params.id as string;
-        const userId = req.body.userId as string;
+        const userId = req.query.userId as string;
 
         if (!userId || (await postViewedUser.find({ userId, postId }))) {
           return res.status(200).json(Presenters.presentSuccess(false));
