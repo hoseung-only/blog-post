@@ -9,6 +9,10 @@ First, setup mysql
 docker pull --platform linux/amd64 mysql:5.7
 
 docker run --platform linux/amd64 --name blog-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=blog -e MYSQL_USER=hsjang -e MYSQL_PASSWORD=password -d mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+docker pull amazon/dynamodb-local
+
+docker run --rm --name blog-dynamo -p 8000:8000 -d amazon/dynamodb-local
 ```
 
 And then run test script
