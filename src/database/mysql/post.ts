@@ -150,6 +150,7 @@ export class Post {
         query: `%${query}%`,
       })
       .andWhere("post.createdAt < :cursor", { cursor: cursor ? new Date(cursor) : new Date() })
+      .orderBy("post.createdAt", "DESC")
       .limit(count)
       .getMany();
   }
