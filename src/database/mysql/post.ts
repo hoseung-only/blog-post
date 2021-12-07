@@ -141,6 +141,19 @@ export class Post {
     return (await this.getRepository()).save(post);
   }
 
+  public static async search({ query, count, cursor }: { query: string; count: number; cursor?: number }) {
+    const repository = await this.getRepository();
+
+    return await repository
+      .createQueryBuilder("post")
+      .where("post.title LIKE :query OR post.summary LIKE :query OR post.content LIKE :query", {
+        query: `%${query}%`,
+      })
+      .andWhere("post.createdAt < :cursor", { cursor: cursor ? new Date(cursor) : new Date() })
+      .limit(count)
+      .getMany();
+  }
+
   @Index()
   @PrimaryGeneratedColumn("uuid")
   id: string;
